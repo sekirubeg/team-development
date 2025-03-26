@@ -63,4 +63,5 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task_Tag::class);
     }
+
 }

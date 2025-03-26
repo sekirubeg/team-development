@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class RegisterController extends Controller
 {
@@ -67,6 +68,38 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'image_at' => $data['image_at'] ?? null,
         ]);
     }
+
+
+    // Profile_img_by_Aiko
+
+    public function store(Request $request)
+    {
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|confirmed|min:8',
+        'image_at' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    $imagePath = null;
+
+    if ($request->hasFile('image_at')) {
+        $imagePath = $request->file('image_at')->store('image_at', 'public');
+    }
+
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'image_at' => $data['image_at'] ?? null,
+    ]);
+
+    Auth::login($user);
+
+    return redirect(RouteServiceProvider::HOME);
+}
+
 }
