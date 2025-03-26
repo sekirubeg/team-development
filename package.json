@@ -18,5 +18,8 @@
         "tailwindcss": "^3.4.13",
         "vite": "^5.2.10",
         "vue": "^3.2.37"
+    },
+    "dependencies": {
+        "save-dev": "^0.0.1-security"
     }
 }
