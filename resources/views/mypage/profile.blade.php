@@ -28,6 +28,7 @@
             <div class="profile-info">
                 <p><strong>名前：</strong>{{ $user->name }}</p>
                 <p><strong>メールアドレス：</strong>{{ $user->email }}</p>
+                <p><strong>自己紹介：</strong>{{ $user->description }}</p>
                 <p><strong>作成日時：</strong>{{ \Carbon\Carbon::parse($user->created_at)->format('Y年m月d日 H:i') }}</p>
             </div>
 
@@ -37,4 +38,24 @@
             </div>
         </div>
     </div>
+    <h1>自分のタスク</h1>
+    @foreach ($tasks as $task)
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="img/sample.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">タイトル : {{ $task->title }}</h5>
+                            <p class="card-text">内容 : {{ $task->content }}</p>
+                            <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-primary">Edit</a>
+                            <form  method="post" action="{{ route('tasks.destroy', $task->id) }}" class="btn btn-danger">
+                                @csrf
+                                @method('delete')
+                                <input type="submit" value="削除" onclick="return confirm('削除してよろしいですか?')" style="background-color: transparent; border: none; color: white;">
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+    @endforeach
+    <h1>いいねをつけたタスク</h1>
 @endsection

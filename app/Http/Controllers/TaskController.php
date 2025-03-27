@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
+use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
@@ -45,4 +46,37 @@ class TaskController extends Controller
 
     // return redirect()->route('tasks.index')->with('success', 'タスクを作成しました！');
 }
+
+
+
+
+
+    public function edit(Task $task)
+    {
+        Gate::authorize('update', $task);
+        $data= old() ?: $task;
+        return view('tasks.edit',compact('task', 'data'));
+    }
+
+    public function update(Request $request, Task $task)
+    {
+        Gate::authorize('update', $task);
+        $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'content' => ['required', 'string'],
+        ]);
+
+        $task->title = $request->title;
+        $task->content = $request->content;
+        $task->save();
+
+        return redirect()->route('my_page');
+    }
+
+    public function destroy(Task $task)
+    {
+        Gate::authorize('update', $task);
+        $task->delete();
+        return redirect()->route('my_page');
+    }
 }

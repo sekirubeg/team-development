@@ -13,7 +13,8 @@ class My_pageController extends Controller
     {
         $id = Auth::id();
         $user = DB::table('users')->find($id);
-        return view('mypage.profile', ['user' => $user]);
+        $tasks = DB::table('tasks')->where('user_id', $id)->get();
+        return view('mypage.profile', ['user' => $user, 'tasks' => $tasks]);
     }
 
     //マイページ編集画面表示
@@ -29,8 +30,9 @@ class My_pageController extends Controller
     {
         //バリデーション
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:20',
             'email' => 'required|email|max:255',
+            'description' => 'nullable|string|max:255',
             'image_at' => 'nullable|image|max:2048',
         ]);
 
@@ -38,6 +40,7 @@ class My_pageController extends Controller
         $user = User::find($id);
         $user->name = $validated['name'];
         $user->email = $validated['email'];
+        $user->description = $validated['description'];
 
 
         //画像が選択されている場合

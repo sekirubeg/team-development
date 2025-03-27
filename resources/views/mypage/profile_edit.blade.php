@@ -32,6 +32,10 @@
                 <label for="email" class="form-label">メールアドレス</label>
                 <input id="email" type="email" class="form-control" name="email" value="{{ $user->email }}" required>
             </div>
+             <div class="mb-3">
+                <label for="description" class="form-label">自己紹介</label>
+                <input id="description" type="text" class="form-control" name="description" value="{{ $user->description }}" >
+            </div>
 
             <div class="mb-4">
                 <label for="image_at" class="form-label">プロフィール画像</label>
