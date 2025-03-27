@@ -23,3 +23,5 @@ Route::prefix('my_page')
         Route::get('/edit', [My_pageController::class, 'edit'])->name('my_page.edit');
         Route::post('/update', [My_pageController::class, 'update'])->name('my_page.update');
     });
+Route::post('/task/create', [App\Http\Controllers\HomeController::class, 'task/'])->name('posts.create');
+
