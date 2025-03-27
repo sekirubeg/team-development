@@ -9,11 +9,11 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            //
-        });
+    Schema::table('users', function (Blueprint $table) {
+        $table->string('image_at')->nullable();
+    });
     }
 
     /**
@@ -26,10 +26,5 @@ return new class extends Migration
         });
     }
 
-    public function up()
-    {
-    Schema::table('users', function (Blueprint $table) {
-        $table->string('image_at')->nullable();
-    });
-    }
+
 };
