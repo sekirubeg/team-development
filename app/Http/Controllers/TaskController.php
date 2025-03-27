@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task; 
 use Illuminate\Http\Request;
+use App\Models\Task;
 
 class TaskController extends Controller
 {
-    
+    public function index()
+    {
+        $tasks = Task::all();
+        return view('tasks.index',compact('tasks'));
+    }
     public function create()
     {
         return view('tasks.create'); 
@@ -41,6 +45,4 @@ class TaskController extends Controller
 
     // return redirect()->route('tasks.index')->with('success', 'タスクを作成しました！');
 }
-
 }
-
