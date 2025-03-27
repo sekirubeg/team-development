@@ -1,14 +1,20 @@
-@extends('layouts.mypage')
+{{-- あいこさんのヘッダーを表示させるために、layouts/app.blade.phpにextends --}}
+@extends('layouts.app')
 
 @section('title')
     プロフィール
+@endsection
+
+@section('styles')
+
+    <link rel="stylesheet" href="{{ asset('css/mypage.css') }}">
 @endsection
 
 @section('content')
    <div class="profile-container">
         <div class="profile-card">
             <h1>プロフィール</h1>
-
+            {{-- リダイレクトの際withで指定した文字を出力 --}}
             @if (session('success'))
                 <div class="alert-success">
                     {{ session('success') }}
@@ -26,7 +32,7 @@
             </div>
 
             <div class="profile-buttons">
-                <a href="{{ route('my_page.edit') }}" class="btn">プロフィールを編集</a>
+                <a href="{{ route('my_page.edit') }}" class="btn btn btn-primary px-5">プロフィールを編集</a>
                 <a href="{{ route('home') }}" class="btn btn-secondary">ホームに戻る</a>
             </div>
         </div>
