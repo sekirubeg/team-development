@@ -12,11 +12,6 @@ class TaskController extends Controller
         $tasks = Task::all();
         return view('tasks.index',compact('tasks'));
     }
-}
-
-class TaskController extends Controller
-{
-    
     public function create()
     {
         return view('tasks.create'); 
@@ -50,6 +45,4 @@ class TaskController extends Controller
 
     // return redirect()->route('tasks.index')->with('success', 'タスクを作成しました！');
 }
-
 }
-
