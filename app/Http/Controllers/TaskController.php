@@ -45,7 +45,7 @@ class TaskController extends Controller
         'due_date' => $request->due_date,
     ]);
 
-    // return redirect()->route('tasks.index')->with('success', 'タスクを作成しました！');
+    return redirect()->route('tasks.index')->with('success', 'タスクを作成しました！');
 }
 
 
