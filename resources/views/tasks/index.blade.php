@@ -1,30 +1,102 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+@extends('layouts.app')
+
+@section('styles')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/tasks.css">
-</head>
-<body>
-    <div class="container mt-4">
-        <div class="row">
-            @foreach ($tasks as $task)
-                <div class="col-md-4">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .card-text, #modalContent {
+            word-break: break-word;
+            white-space: pre-wrap;
+            text-align: left; /* 左端から改行 */
+        }
+    </style>
+@endsection
+
+@section('content')
+<h2 class="text-center">みんなのTo Do</h2>
+
+<div class="container mt-4">
+    <div class="row mb-5">
+        @foreach ($tasks as $task)
+            <div class="col-md-4 mb-4">
+                <a href="#" class="task-card" 
+                    data-title="{{ $task->title }}" 
+                    data-content="{{ $task->content }}" 
+                    data-img="{{ asset('img/sample.jpg') }}"  
+                    data-date="{{ $task->created_at->format('Y/m/d H:i') }}"  
+                    style="display:block; text-decoration:none; color:black;"
+                    data-bs-toggle="modal" data-bs-target="#taskModal">
                     <div class="card">
-                        <img src="img/sample.jpg" class="card-img-top" alt="...">
+                        <img src="{{ asset('img/sample.jpg') }}" class="card-img-top" alt="タスク画像">
                         <div class="card-body">
-                            <h5 class="card-title">タイトル : {{ $task->title }}</h5>
-                            <p class="card-text">内容 : {{ $task->content }}</p>
-                            <a href="#" class="btn btn-primary">Edit</a>
-                            <a href="#" class="btn btn-danger">Delete</a>
-                        </div>
+                            <h5 class="card-title d-flex justify-content-between align-items-center text-center">
+                                <span>{{ $task->title }}</span>
+                                <small class="text-muted">{{ $task->created_at->format('Y/m/d H:i') }}</small>
+                            </h5>
+                                <p class="card-text text-start mb-3">{{ $task->content }}</p> <!-- ボタンとの間隔を空ける -->
+                        <div class="d-flex justify-content-between">
+                                <a href="#" class="btn btn-primary">Edit</a>
+                                <a href="#" class="btn btn-danger">Delete</a>
+    </div>
+</div>
+
                     </div>
+                </a>
+            </div>
+        @endforeach
+    </div>
+
+    <!-- ページネーションを中央に配置 -->
+    <div class="d-flex justify-content-center">
+        {{ $tasks->links('pagination::bootstrap-5') }}
+    </div>
+</div>
+
+<!-- モーダル -->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="taskModalLabel">タスク詳細</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+            </div>
+            <div class="modal-body text-center"> <!-- タイトルと日時を中央寄せ -->
+                <img id="modalImg" src="" class="img-fluid mb-3 rounded" alt="タスク画像">
+                
+                
+                <div class="d-flex flex-column align-items-center">
+                    <h5 id="modalTitle" class="mb-2"></h5>
+                    <small class="text-muted" id="modalDate"></small>
                 </div>
-            @endforeach
+
+                <p id="modalContent" class="text-start mt-3"></p> <!-- 左端から折り返し -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+            </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const taskCards = document.querySelectorAll(".task-card");
+
+        taskCards.forEach(card => {
+            card.addEventListener("click", function () {
+                const title = this.getAttribute("data-title");
+                const content = this.getAttribute("data-content");
+                const imgSrc = this.getAttribute("data-img");
+                const date = this.getAttribute("data-date");
+
+                document.getElementById("modalTitle").innerText = title;
+                document.getElementById("modalContent").innerText = content;
+                document.getElementById("modalImg").src = imgSrc;
+                document.getElementById("modalDate").innerText = date;
+            });
+        });
+    });
+</script>
+
+@endsection

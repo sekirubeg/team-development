@@ -18,6 +18,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/tasks',[TaskController::class, 'index'])->name('tasks.index');
 
+Route::get('/tasks/{id}',[TaskController::class,'show'])->name('tasks.show');
+
 // ルートをグループ化しており、全てのurlがmy_pageから始まり、authを適用させている
 Route::prefix('my_page')
     ->middleware('auth')
