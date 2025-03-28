@@ -10,9 +10,10 @@ class TaskController extends Controller
 {
     public function index()
     {
-        $tasks = Task::all();
-        return view('tasks.index',compact('tasks'));
+        $tasks = Task::paginate(6); // 6件ずつ
+        return view('tasks.index', compact('tasks'));
     }
+
     public function create()
     {
         return view('tasks.create'); 

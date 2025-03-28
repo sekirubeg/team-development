@@ -6,3 +6,9 @@
   width: 18rem;
   margin-bottom: 20px;
 }
+h2{
+  text-align: center;
+}
+.pagination{
+  margin-top: 50px;
+}
