@@ -40,9 +40,9 @@ class TaskController extends Controller
         'title' => $request->title,
         'content' => $request->content,
         'user_id' => auth()->id(),
-        'image_path' => $imagePath,
-        'priority' => $request->priority,
-        'due_date' => $request->due_date,
+        'image_at' => $imagePath,
+        'importance' => $request->priority,
+        'limit' => $request->due_date,
     ]);
 
     return redirect()->route('tasks.index')->with('success', 'タスクを作成しました！');
