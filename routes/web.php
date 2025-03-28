@@ -21,9 +21,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/tasks',[TaskController::class, 'index'])->name('tasks.index');
 
 
+Route::get('/tasks/{id}',[TaskController::class,'show'])->name('tasks.show');
+
+
 Route::get('/tasks/{task}/edit',[TaskController::class, 'edit'])->name('tasks.edit');
 Route::put('/tasks/{task}',[TaskController::class, 'update'])->name('tasks.update');
 Route::delete('/tasks/{task}',[TaskController::class, 'destroy'])->name('tasks.destroy');
+
 
 
 // ルートをグループ化しており、全てのurlがmy_pageから始まり、authを適用させている
