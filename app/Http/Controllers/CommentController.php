@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Comment;
-use Illuminate\Support\Facades\Auth;     
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
 
     public function create($task_id)
     {
-        $task = Task::findOrFail($task_id);
+        $task = Task::with(['comments.user'])->findOrFail($task_id);
         return view('comments.create', compact('task'));
     }
 
@@ -20,7 +20,7 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'body' => 'required|string|max:255',
+            'body' => 'required|string|max:255|',
             'task_id' => 'required|exists:tasks,id',
         ]);
 
@@ -28,9 +28,9 @@ class CommentController extends Controller
         $comment = new Comment();
         $comment->body = $request->body;
         $comment->task_id = $task->id;
-        $comment->user_id = Auth::id(); // 現在のユーザーIDを取得   
+        $comment->user_id = Auth::id(); // 現在のユーザーIDを取得
         $comment->save();
-        // $task->comments()->save($comment); 
+        // $task->comments()->save($comment);
 
         return redirect()->route('tasks.index')->with('success', 'コメントを追加しました！');
     }

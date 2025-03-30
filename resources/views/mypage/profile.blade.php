@@ -34,7 +34,7 @@
 
             <div class="profile-buttons">
                 <a href="{{ route('my_page.edit') }}" class="btn btn btn-primary px-5">プロフィールを編集</a>
-                <a href="{{ route('tasks') }}" class="btn btn-secondary">ホームに戻る</a>
+                <a href="{{ route('tasks.index') }}" class="btn btn-secondary">ホームに戻る</a>
             </div>
         </div>
     </div>
