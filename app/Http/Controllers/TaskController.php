@@ -97,11 +97,12 @@ class TaskController extends Controller
 
     
     $image_at= null;
-    if ($request->hasFile('image')) {
-        $image_at = $request->file('image')->store('task_images', 'public');
-    }
 
-    
+    if ($request->hasFile('image_at')) {
+            $imagePath = $request->file('image_at')->store('images', 'public');
+    } else {
+            $imagePath = 'img/task.png';
+        }
     Task::create([
         'title' => $request->title,
         'content' => $request->content,
@@ -131,6 +132,7 @@ class TaskController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'content' => ['required', 'string'],
         ]);
+
 
         $task->title = $request->title;
         $task->content = $request->content;
