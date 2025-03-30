@@ -18,7 +18,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Route::get('/my_page', [App\Http\Controllers\My_pageController::class, 'index'])->name('my_page');
 
 
-Route::get('/tasks',[TaskController::class, 'index'])->name('tasks.index');
+Route::get('/tasks',[TaskController::class, 'index'])->name('tasks');
 
 
 Route::get('/tasks/{id}',[TaskController::class,'show'])->name('tasks.show');

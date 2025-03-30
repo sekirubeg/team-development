@@ -51,15 +51,20 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
+
+                        {{-- <div class="profile-image">
+                            <img src="{{ asset('storage/' . $user->image_at) }}" alt="プロフィール画像">
+                        </div> --}}
+
+                                    <li class="nav-item dropdown mb-0">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="navbarDropdown">
-                                    {{-- <a href="{{ route('tasks') }}" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
+                                    <a href="{{ url('/tasks') }}" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
                                         {{ __('トップページ') }}
-                                    </a> --}}
+                                    </a>
 
                                     <a href="#" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
                                         {{ __('新規タスク追加') }}
