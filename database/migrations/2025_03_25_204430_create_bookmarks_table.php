@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('bookmarks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->bigInteger('user_id')->unsigned()->index();
+            $table->bigInteger('task_id')->unsigned()->index();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
+
+            $table->unique(['user_id', 'task_id']);
         });
     }
 

@@ -4,6 +4,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/tasks.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <style>
         .card-text, #modalContent {
             word-break: break-word;
@@ -11,6 +12,7 @@
             text-align: left; /* 左端から改行 */
         }
     </style>
+     
 @endsection
 
 @section('content')
@@ -38,6 +40,21 @@
                         <div class="d-flex justify-content-between">
                                 <a href="#" class="btn btn-primary">Edit</a>
                                 <a href="#" class="btn btn-danger">Delete</a>
+                                
+                                <div>
+    @if (Auth::id() !== $task->user_id)
+        <button 
+            class="btn {{ Auth::user()->is_bookmark($task->id) ? 'btn-success' : 'btn-outline-success' }} bookmark-toggle" 
+            data-task-id="{{ $task->id }}" 
+            data-bookmarked="{{ Auth::user()->is_bookmark($task->id) ? 'true' : 'false' }}"
+        >
+            {{ Auth::user()->is_bookmark($task->id) ? 'いいねを取り消す' : 'いいね' }}
+        </button>
+    @endif
+</div>
+
+
+</button>
     </div>
 </div>
 
@@ -80,23 +97,58 @@
 </div>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const taskCards = document.querySelectorAll(".task-card");
+document.addEventListener("DOMContentLoaded", function () {
+    // モーダル処理
+    const taskCards = document.querySelectorAll(".task-card");
+    taskCards.forEach(card => {
+        card.addEventListener("click", function () {
+            const title = this.getAttribute("data-title");
+            const content = this.getAttribute("data-content");
+            const imgSrc = this.getAttribute("data-img");
+            const date = this.getAttribute("data-date");
 
-        taskCards.forEach(card => {
-            card.addEventListener("click", function () {
-                const title = this.getAttribute("data-title");
-                const content = this.getAttribute("data-content");
-                const imgSrc = this.getAttribute("data-img");
-                const date = this.getAttribute("data-date");
-
-                document.getElementById("modalTitle").innerText = title;
-                document.getElementById("modalContent").innerText = content;
-                document.getElementById("modalImg").src = imgSrc;
-                document.getElementById("modalDate").innerText = date;
-            });
+            document.getElementById("modalTitle").innerText = title;
+            document.getElementById("modalContent").innerText = content;
+            document.getElementById("modalImg").src = imgSrc;
+            document.getElementById("modalDate").innerText = date;
         });
     });
+
+    // いいね処理（AJAX）
+    const buttons = document.querySelectorAll('.bookmark-toggle');
+    buttons.forEach(button => {
+        button.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const taskId = button.dataset.taskId;
+            const isBookmarked = button.dataset.bookmarked === 'true';
+
+            const url = `/bookmarks/${taskId}`;
+            const method = isBookmarked ? 'DELETE' : 'POST';
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    // UI更新
+                    button.classList.toggle('btn-success');
+                    button.classList.toggle('btn-outline-success');
+                    button.textContent = isBookmarked ? 'いいね' : 'いいねを取り消す';
+                    button.dataset.bookmarked = isBookmarked ? 'false' : 'true';
+                } else {
+                    alert('通信エラーが発生しました');
+                }
+            } catch (error) {
+                alert('通信に失敗しました');
+                console.error(error);
+            }
+        });
+    });
+});
 </script>
 
-@endsection
