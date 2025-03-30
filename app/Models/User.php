@@ -58,8 +58,39 @@ class User extends Authenticatable
     }
     public function bookmarks()
     {
-        return $this->hasMany(Bookmark::class);
+        return $this->belongsToMany(Task::class, 'bookmarks', 'user_id', 'task_id')->withTimestamps();
     }
+    public function bookmark($taskId)
+    {
+        $exist = $this->is_bookmark($taskId);
+        if ($exist) {
+            return false;
+        } else {
+            $this->bookmarks()->attach($taskId);
+            return true;
+        }
+    }
+    public function unbookmark($taskId)
+    {
+        $exist = $this->is_bookmark($taskId);
+        if ($exist) {
+            $this->bookmarks()->detach($taskId);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function is_bookmark($taskId)
+    {
+        return $this->bookmarks()->where('task_id', $taskId)->exists();
+    }
+
+
+
+
+
+
+
     public function task_tags()
     {
         return $this->hasMany(Task_Tag::class);

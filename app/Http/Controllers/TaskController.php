@@ -4,13 +4,28 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::paginate(6); // 6件ずつ
+        $query = Task::with('comments')
+            ->withCount('bookmarks');
+
+
+
+        if($request->has('search') && $request->filled('search')){
+            $searchKeyword = $request->input('search');
+            $query->where('title', 'like', '%'. $searchKeyword . '%');
+        }
+        $tasks = $query->paginate(6);
+
+        if ($request->filled('search')) {
+            $tasks->appends(['search' => $request->search]);
+        }
         return view('tasks.index', compact('tasks'));
     }
 
@@ -23,6 +38,7 @@ class TaskController extends Controller
 {
     $request->validate([
         'title' => 'required|string|max:255',
+
         'content' => 'required|string',
         'image_at' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'importance' => 'required|integer|between:1,3',
@@ -47,6 +63,13 @@ class TaskController extends Controller
         'image.image' => 'アップロードできるのは画像ファイルのみです。',
         'image.mimes' => '画像の形式はjpeg, png, jpg, gifのいずれかにしてください。',
         'image.max' => '画像のサイズは最大2MBまでです。',
+=======
+        'content' => 'nullable|string',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'importance' => 'required|integer|between:1,3',
+        'limit' => 'nullable|date',
+
+
     ]);
 
     
@@ -59,8 +82,10 @@ class TaskController extends Controller
     Task::create([
         'title' => $request->title,
         'content' => $request->content,
-        'user_id' => auth()->id(),
-        'image_at' => $image_at,
+
+        'user_id' => Auth::id(),
+        'image_at' => $imagePath,
+
         'importance' => $request->importance,
         'limit' => $request->limit,
     ]);
@@ -98,5 +123,15 @@ class TaskController extends Controller
         Gate::authorize('update', $task);
         $task->delete();
         return redirect()->route('my_page');
+    }
+
+
+
+
+    public function comment_destroy(Task $task)
+    {
+        $task->comments()->delete();
+        $task->delete();
+        return redirect()->route('home')->with('message', '投稿を削除しました');
     }
 }
