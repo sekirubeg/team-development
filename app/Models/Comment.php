@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Comment extends Model
 {
     /** @use HasFactory<\Database\Factories\CommentsFactory> */
@@ -12,7 +13,7 @@ class Comment extends Model
 
     protected $guarded = [];
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

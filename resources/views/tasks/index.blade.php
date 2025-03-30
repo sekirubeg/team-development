@@ -66,8 +66,7 @@
                         <div class="d-flex justify-content-between">
                                 <a href="#" class="btn btn-primary">Edit</a>
                                 <a href="#" class="btn btn-danger">Delete</a>
-                                
-                                
+
     @if (Auth::id() !== $task->user_id)
     <div style="display:flex;     align-items: center;">
         <button 
@@ -75,7 +74,7 @@
             data-task-id="{{ $task->id }}" 
             data-bookmarked="{{ Auth::user()->is_bookmark($task->id) ? 'true' : 'false' }}"
             style=" border-color:red; background-color:white; width:40px; padding:0; border: none;">
-            
+
             {!! Auth::user()->is_bookmark($task->id) ?  '<i class="fa-solid fa-heart  fa-xl"></i>' : '<i class="fa-regular fa-heart  fa-xl"></i>' !!}
 
         </button>
@@ -84,11 +83,6 @@
             </span>
  </div>
     @endif
-
-
-
-
-
 
 </button>
                             

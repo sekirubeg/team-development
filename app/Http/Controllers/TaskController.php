@@ -31,17 +31,19 @@ class TaskController extends Controller
 
     public function create()
     {
-        return view('tasks.create'); 
+        return view('tasks.create');
     }
 
     public function store(Request $request)
 {
+
+    dd($request->all());
     $request->validate([
         'title' => 'required|string|max:255',
         'content' => 'nullable|string',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'importance' => 'required|integer|between:1,3',
-        'limit' => 'nullable|date',
+        'limit' => 'required|date',
 
     ]);
 
@@ -63,10 +65,6 @@ class TaskController extends Controller
 
     return redirect()->route('tasks.index')->with('success', 'タスクを作成しました！');
 }
-
-
-
-
 
     public function edit(Task $task)
     {
@@ -96,9 +94,6 @@ class TaskController extends Controller
         $task->delete();
         return redirect()->route('my_page');
     }
-
-
-
 
     public function comment_destroy(Task $task)
     {
