@@ -51,3 +51,9 @@
         </form>
     </div>
 @endsection
+
+@if ($errors->has('name'))
+<div>
+{{ $errors->first('name') }}
+</div>
+@endif

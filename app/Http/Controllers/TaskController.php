@@ -51,7 +51,6 @@ class TaskController extends Controller
 
 
 
-
     public function edit(Task $task)
     {
         Gate::authorize('update', $task);
