@@ -23,16 +23,36 @@ class TaskController extends Controller
 {
     $request->validate([
         'title' => 'required|string|max:255',
-        'content' => 'nullable|string',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'priority' => 'required|integer|between:1,3',
-        'due_date' => 'nullable|date',
+        'content' => 'required|string',
+        'image_at' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'importance' => 'required|integer|between:1,3',
+        'limit' => 'required|date',
+    ], [
+        'title.required' => 'タイトルを入力してください。',
+        'title.string' => 'タイトルは文字列である必要があります。',
+        'title.max' => 'タイトルは最大255文字までです。',
+        
+        'content.required' => '内容を入力してください。',
+        'content.string' => '内容は文字列である必要があります。',
+
+        'importance.required' => '優先度を選択してください。',
+        'importance.integer' => '優先度は数値である必要があります。',
+        'importance.between' => '優先度は1〜3の間で選択してください。',
+
+        'limit.required' => '期限日を入力してください。',
+        'limit.date' => '有効な日付を入力してください。',
+        'limit.after_or_equal' => '期限日は今日以降の日付を選択してください。',
+
+        'image.required' => '画像をアップロードしてください。',
+        'image.image' => 'アップロードできるのは画像ファイルのみです。',
+        'image.mimes' => '画像の形式はjpeg, png, jpg, gifのいずれかにしてください。',
+        'image.max' => '画像のサイズは最大2MBまでです。',
     ]);
 
     
-    $imagePath = null;
+    $image_at= null;
     if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('task_images', 'public');
+        $image_at = $request->file('image')->store('task_images', 'public');
     }
 
     
@@ -40,9 +60,9 @@ class TaskController extends Controller
         'title' => $request->title,
         'content' => $request->content,
         'user_id' => auth()->id(),
-        'image_at' => $imagePath,
-        'importance' => $request->priority,
-        'limit' => $request->due_date,
+        'image_at' => $image_at,
+        'importance' => $request->importance,
+        'limit' => $request->limit,
     ]);
 
     return redirect()->route('tasks.index')->with('success', 'タスクを作成しました！');

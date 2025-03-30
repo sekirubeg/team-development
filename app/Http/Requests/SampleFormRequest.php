@@ -25,8 +25,8 @@ class SampleFormRequest extends FormRequest
         return [
             'title' => 'required|string|max:25',
             'content' => 'required|string',
-            'priority' => 'required|integer|between:1,3',
-            'due_date' => 'required|date|after_or_equal:today',
+            'importanc' => 'required|integer|between:1,3',
+            'limit' => 'required|date|after_or_equal:today',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
@@ -46,13 +46,13 @@ class SampleFormRequest extends FormRequest
             'content.required' => '内容を入力してください。',
             'content.string' => '内容は文字列である必要があります。',
 
-            'priority.required' => '優先度を選択してください。',
-            'priority.integer' => '優先度は数値である必要があります。',
-            'priority.between' => '優先度は1〜3の間で選択してください。',
+            'importance.required' => '優先度を選択してください。',
+            'importance.integer' => '優先度は数値である必要があります。',
+            'importance.between' => '優先度は1〜3の間で選択してください。',
 
-            'due_date.required' => '期限日を入力してください。',
-            'due_date.date' => '有効な日付を入力してください。',
-            'due_date.after_or_equal' => '期限日は今日以降の日付を選択してください。',
+            'limit.required' => '期限日を入力してください。',
+            'limit.date' => '有効な日付を入力してください。',
+            'limit.after_or_equal' => '期限日は今日以降の日付を選択してください。',
 
             'image.required' => '画像をアップロードしてください。',
             'image.image' => 'アップロードできるのは画像ファイルのみです。',

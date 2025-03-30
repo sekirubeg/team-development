@@ -30,7 +30,7 @@ Route::delete('/tasks/{task}',[TaskController::class, 'destroy'])->name('tasks.d
 
 
 
-// ルートをグループ化しており、全てのurlがmy_pageから始まり、authを適用させている
+
 Route::prefix('my_page')
     ->middleware('auth')
     ->group(function () {
