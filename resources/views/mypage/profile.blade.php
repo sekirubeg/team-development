@@ -63,7 +63,7 @@
         @foreach ($likedTasks as $task)
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <img src="img/sample.jpg" class="card-img-top" alt="...">
+                    <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">タイトル : {{ $task->title }}</h5>
                         <p class="card-text">内容 : {{ $task->content }}</p>
