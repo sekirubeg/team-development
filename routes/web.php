@@ -24,8 +24,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 
-
-
 Route::get('/tasks/{id}',[TaskController::class,'show'])->name('tasks.show');
 
 
