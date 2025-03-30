@@ -29,8 +29,11 @@
               @forelse ($task->comments as $comment)
                   <div class="card mb-2">
                       <div class="card-body">
-                          <p>{{ $comment->user->name }}</p>
-                          <p>{{ $comment->body }}</p>
+                        <div style="display: flex; align-items:center; margin-bottom:13px;">
+                        <img src="{{ asset('storage/' . Auth::user()->image_at) }}" alt="プロフィール画像" class="profile-icon-small" style="margin-right: 15px;">
+                          <p style="margin-bottom: 0;">{{ $comment->user->name }}</p>
+                          </div>
+                          <p style="font-size:18px;">{{ $comment->body }}</p>
                           <small class="text-muted">
                               投稿日：{{ $comment->created_at }}
                           </small>

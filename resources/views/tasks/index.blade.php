@@ -89,30 +89,38 @@
                                 <a href="#" class="btn btn-danger">Delete</a>
                             @endif
 
-    @if (Auth::id() !== $task->user_id)
-    <div style="display:flex;  align-items: center;">
-        <button 
-            class="btn {{ Auth::user()->is_bookmark($task->id) ? 'btn-success' : 'btn-outline-success' }} bookmark-toggle" 
-            data-task-id="{{ $task->id }}" 
-            data-bookmarked="{{ Auth::user()->is_bookmark($task->id) ? 'true' : 'false' }}"
-            style=" border-color:red; background-color:white; width:40px; padding:0; border: none;">
+                    @if (Auth::id() !== $task->user_id)
+                        <div style="display:flex; align-items: center;">
+                            @guest
+                                <a href="{{ route('login') }}" class="btn btn-outline-success" style="border: none; background: none;">
+                                    <i class="fa-regular fa-heart fa-xl"></i>
+                                </a>
+                                <span class="like-count" style="font-size:15px;">{{ $task->bookmarks_count }}</span>
+                            @else
+                                <button 
+                                    class="btn {{ Auth::user()->is_bookmark($task->id) ? 'btn-success' : 'btn-outline-success' }} bookmark-toggle"
+                                    data-task-id="{{ $task->id }}" 
+                                    data-bookmarked="{{ Auth::user()->is_bookmark($task->id) ? 'true' : 'false' }}"
+                                    style="border: none; background-color: white; width: 40px; padding: 0;"
+                                >
+                                    {!! Auth::user()->is_bookmark($task->id) 
+                                        ? '<i class="fa-solid fa-heart fa-xl"></i>' 
+                                        : '<i class="fa-regular fa-heart fa-xl"></i>' !!}
+                                </button>
+                                <span class="like-count {{ Auth::user()->is_bookmark($task->id) ? 'is-bookmarked' : '' }}" style="font-size:15px;">
+                                    {{ $task->bookmarks_count }}
+                                </span>
+                            @endguest
+                        </div>
 
-            {!! Auth::user()->is_bookmark($task->id) ?  '<i class="fa-solid fa-heart  fa-xl"></i>' : '<i class="fa-regular fa-heart  fa-xl"></i>' !!}
-
-        </button>
-                    <span class="like-count {{ Auth::user()->is_bookmark($task->id) ? 'is-bookmarked' : '' }}" style="font-size:15px;">
-            {{ $task->bookmarks_count }}
-            </span>
- </div>
- 
-
-</button>
-                            
-
-                       <button type="button" class="btn btn-primary">
-                          <a class="text-decoration-none" href="{{route('comment.create', $task)}}" style="color:white;">コメントする</a>
-                      </button> 
-                 @endif
+                        @guest
+                            <a href="{{ route('login') }}" class="btn btn-primary">ログインしてコメント</a>
+                        @else
+                            <a class="btn btn-primary text-decoration-none text-white" href="{{ route('comment.create', $task) }}">
+                                コメント表示
+                            </a>
+                        @endguest
+                    @endif
 
     </div>
 </div>
