@@ -39,32 +39,63 @@ class TaskController extends Controller
 
 
     $request->validate([
-        'title' => 'required|string|max:255',
+        'title' => 'required|string|max:255|min:3',
+        'content' => 'required|string|min:10',
+        'image_at' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'importance' => 'required|integer|between:1,3',
+        'limit' => 'required|date',
+    ], [
+        'title.required' => 'タイトルを入力してください。',
+        'title.string' => 'タイトルは文字列である必要があります。',
+        'title.max' => 'タイトルは最大255文字までです。',
+        'title.min' => 'タイトルは最小3文字以上である必要があります。',
+        
+        'content.required' => '内容を入力してください。',
+        'content.string' => '内容は文字列である必要があります。',
+        'content.min' => '内容は最小10文字以上である必要があります。',
+
+        'importance.required' => '優先度を選択してください。',
+        'importance.integer' => '優先度は数値である必要があります。',
+        'importance.between' => '優先度は1〜3の間で選択してください。',
+
+        'limit.required' => '期限日を入力してください。',
+        'limit.date' => '有効な日付を入力してください。',
+        'limit.after_or_equal' => '期限日は今日以降の日付を選択してください。',
+
+        'image.required' => '画像をアップロードしてください。',
+        'image.image' => 'アップロードできるのは画像ファイルのみです。',
+        'image.mimes' => '画像の形式はjpeg, png, jpg, gifのいずれかにしてください。',
+        'image.max' => '画像のサイズは最大2MBまでです。',
+
         'content' => 'nullable|string',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'importance' => 'required|integer|between:1,3',
         'limit' => 'required|date',
 
+
     ]);
 
     
-    $imagePath = null;
+    $image_at= null;
     if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('task_images', 'public');
+        $image_at = $request->file('image')->store('task_images', 'public');
     }
 
     
     Task::create([
         'title' => $request->title,
         'content' => $request->content,
+
         'user_id' => Auth::id(),
-        'image_at' => $imagePath,
+        'image_at' => $image_at,
+
         'importance' => $request->importance,
         'limit' => $request->limit,
     ]);
 
     return redirect()->route('tasks.index')->with('success', 'タスクを作成しました！');
 }
+
 
     public function edit(Task $task)
     {

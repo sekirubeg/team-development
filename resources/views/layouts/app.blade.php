@@ -69,7 +69,7 @@
 
                         <li class="nav-item dropdown mb-0">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <img src="{{ asset('storage/' . Auth::user()->image_at) }}" alt="プロフィール画像" class="profile-icon-small">
+                                    <img src="{{ asset('storage/' . Auth::user()->image_at) }}" alt="プロフィール画像" class="profile-icon-small" style="margin-right: 15px;">
                                     {{ Auth::user()->name }}
                                 </a>
 

@@ -46,6 +46,6 @@ class LoginController extends Controller
      */
     protected function loggedOut(\Illuminate\Http\Request $request)
     {
-        return redirect()->route('tasks');
+        return redirect()->route('tasks.index');
     }
 }
