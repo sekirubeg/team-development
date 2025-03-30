@@ -86,8 +86,13 @@
                                 <p class="card-text text-start mb-3">{{ $task->content }}</p> <!-- ボタンとの間隔を空ける -->
                         <div class="d-flex justify-content-between">
                              @if (Auth::id() == $task->user_id)
-                                <a href="#" class="btn btn-primary">Edit</a>
-                                <a href="#" class="btn btn-danger">Delete</a>
+                                <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-primary">Edit</a>
+                                <form  method="post" action="{{ route('tasks.destroy', $task->id) }}" class="btn btn-danger">
+                                @csrf
+                                @method('delete')
+                                <input type="submit" value="削除" onclick="return confirm('削除してよろしいですか?')" style="background-color: transparent; border: none; color: white;">
+
+                            </form>
                             @endif
 
                     @if (Auth::id() !== $task->user_id)

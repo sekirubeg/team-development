@@ -13,10 +13,10 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $query = Task::with('comments')
-            ->withCount('bookmarks');
-
-
-
+            ->withCount('bookmarks')
+            ->whereDate('limit', '>=', now())         // 期限が今日以降
+            ->where('is_completed', false);           // 未完了のみ
+            
         if($request->has('search') && $request->filled('search')){
             $searchKeyword = $request->input('search');
             $query->where('title', 'like', '%'. $searchKeyword . '%');
@@ -138,14 +138,14 @@ class TaskController extends Controller
         $task->content = $request->content;
         $task->save();
 
-        return redirect()->route('my_page');
+        return redirect()->route('tasks.index');
     }
 
     public function destroy(Task $task)
     {
         Gate::authorize('update', $task);
         $task->delete();
-        return redirect()->route('my_page');
+        return redirect()->route('tasks.index');
     }
 
     public function comment_destroy(Task $task)
