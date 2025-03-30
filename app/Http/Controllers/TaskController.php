@@ -21,7 +21,27 @@ class TaskController extends Controller
             $searchKeyword = $request->input('search');
             $query->where('title', 'like', '%'. $searchKeyword . '%');
         }
-        $tasks = $query->paginate(6);
+
+        $sortType = $request->input('sort', 'newest');
+       
+        switch ($sortType) {
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'good':
+                $query->orderBy('bookmarks_count', 'desc');
+                break;
+            case 'important':
+                $query->orderBy('importance', 'desc');
+                break;
+            case 'deadline':
+                $query->orderBy('limit', 'asc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc');
+        }
+
+        $tasks = $query->paginate(6)->appends($request->query());
 
         if ($request->filled('search')) {
             $tasks->appends(['search' => $request->search]);
