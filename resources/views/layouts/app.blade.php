@@ -19,13 +19,18 @@
 
     <style>
         .profile-icon-small {
-            width: 2.3em;
-            height: 2.3em;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             object-fit: cover;
             margin-right: 0.5em;
             vertical-align: middle;
         }
+
+        .navbar .nav-link.dropdown-toggle {
+        font-size: 16px;
+        font-family: 'Nunito', sans-serif;
+    }
     </style>
 </head>
 <body>
