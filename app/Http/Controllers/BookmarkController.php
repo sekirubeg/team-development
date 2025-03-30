@@ -16,6 +16,6 @@ class BookmarkController extends Controller
     public function destroy(Request $request, $id)
     {
         Auth::user()->unbookmark($id);
-        return back();
+        return response()->json(['message' => 'Deleted successfully'], 200);
     }
 }

@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\My_pageController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\BookmarkController;
+
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
@@ -45,5 +47,8 @@ Route::prefix('my_page')
         Route::post('/update', [My_pageController::class, 'update'])->name('my_page.update');
 });
 
-Route::post('/task/create', [App\Http\Controllers\HomeController::class, 'task/'])->name('posts.create');
+Route::get('/task/create', [TaskController::class, 'create'])->name('tasks.create');
+Route::post('/task/store', [TaskController::class, 'store'])->name('tasks.store');
 
+Route::get('/comments/create/{task_id}', [CommentController::class, 'create'])->name('comment.create');
+Route::post('/comments', [CommentController::class, 'create'])->name('comment.store');

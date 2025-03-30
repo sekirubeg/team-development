@@ -8,9 +8,22 @@ use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::paginate(6); // 6件ずつ
+        $query = Task::with('comments')
+            ->withCount('bookmarks');
+
+
+
+        if($request->has('search') && $request->filled('search')){
+            $searchKeyword = $request->input('search');
+            $query->where('title', 'like', '%'. $searchKeyword . '%');
+        }
+        $tasks = $query->paginate(6);
+
+        if ($request->filled('search')) {
+            $tasks->appends(['search' => $request->search]);
+        }
         return view('tasks.index', compact('tasks'));
     }
 
@@ -40,9 +53,9 @@ class TaskController extends Controller
         'title' => $request->title,
         'content' => $request->content,
         'user_id' => auth()->id(),
-        'image_path' => $imagePath,
-        'priority' => $request->priority,
-        'due_date' => $request->due_date,
+        'image_at' => $imagePath,
+        'importance' => $request->priority,
+        'limit' => $request->due_date,
     ]);
 
     return redirect()->route('tasks.index')->with('success', 'タスクを作成しました！');
@@ -79,5 +92,15 @@ class TaskController extends Controller
         Gate::authorize('update', $task);
         $task->delete();
         return redirect()->route('my_page');
+    }
+
+
+
+
+    public function comment_destroy(Task $task)
+    {
+        $task->comments()->delete();
+        $task->delete();
+        return redirect()->route('home')->with('message', '投稿を削除しました');
     }
 }

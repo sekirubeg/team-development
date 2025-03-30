@@ -22,7 +22,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md bg-black text-white shadow-sm">
             <div class="container" >
-                <a class="navbar-brand text-white" href="{{ url('/') }}">
+                <a class="navbar-brand text-white" href="{{ url('/tasks') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -57,12 +57,23 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="navbarDropdown">
-                                    <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                    class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out">
-                                        {{ __('Logout') }}
+                                    {{-- <a href="{{ route('tasks') }}" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
+                                        {{ __('トップページ') }}
+                                    </a> --}}
+
+                                    <a href="#" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
+                                        {{ __('新規タスク追加') }}
                                     </a>
 
+                                    <a href="{{ route('my_page') }}" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
+                                        {{ __('マイページ') }}
+                                    </a>
+
+                                    <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                    class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
+                                        {{ __('ログアウト') }}
+                                    </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>

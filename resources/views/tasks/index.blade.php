@@ -2,21 +2,47 @@
 
 @section('styles')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/tasks.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+   
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 不要(Aiko)　--}}
     <style>
         .card-text, #modalContent {
             word-break: break-word;
             white-space: pre-wrap;
             text-align: left; /* 左端から改行 */
         }
+        .is-bookmarked{
+            color: red;
+        }
+        .btn-success:hover,
+        .btn-success:focus,
+        .btn-success:active {
+            color: red;
+        }
+        .btn-success{
+            color: red;
+        }
+        .btn-outline-success:hover,
+        .btn-outline-success:focus,
+        .btn-outline-success:active {
+            color: black;
+        }
+        .btn-outline-success{
+            color: black;
+        }
     </style>
-     
 @endsection
 
 @section('content')
 <h2 class="text-center">みんなのTo Do</h2>
+
+<form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 80%; margin:auto; ">
+    <div class="input-group">
+        <input type="text" name="search" class="form-control" placeholder="検索キーワード" value="{{ request('search') }}">
+        <button class="btn btn-primary" type="submit">検索</button>
+    </div>
+</form>
 
 <div class="container mt-4">
     <div class="row mb-5">
@@ -41,20 +67,38 @@
                                 <a href="#" class="btn btn-primary">Edit</a>
                                 <a href="#" class="btn btn-danger">Delete</a>
                                 
-                                <div>
+                                
+                                
     @if (Auth::id() !== $task->user_id)
+    <div style="display:flex;     align-items: center;">
         <button 
             class="btn {{ Auth::user()->is_bookmark($task->id) ? 'btn-success' : 'btn-outline-success' }} bookmark-toggle" 
             data-task-id="{{ $task->id }}" 
             data-bookmarked="{{ Auth::user()->is_bookmark($task->id) ? 'true' : 'false' }}"
-        >
-            {{ Auth::user()->is_bookmark($task->id) ? 'いいねを取り消す' : 'いいね' }}
+            style=" border-color:red; background-color:white; width:40px; padding:0; border: none;">
+            
+            {!! Auth::user()->is_bookmark($task->id) ?  '<i class="fa-solid fa-heart  fa-xl"></i>' : '<i class="fa-regular fa-heart  fa-xl"></i>' !!}
+
         </button>
+                    <span class="like-count {{ Auth::user()->is_bookmark($task->id) ? 'is-bookmarked' : '' }}" style="font-size:15px;">
+            {{ $task->bookmarks_count }}
+            </span>
+ </div>
     @endif
-</div>
+
+
+
+
 
 
 </button>
+                            
+
+                       <button type="button" class="btn btn-primary">
+                          <a class="text-decoration-none" href="{{route('comment.create', $task)}}" style="color:white;">コメントする</a>
+                      </button> 
+              
+
     </div>
 </div>
 
@@ -95,7 +139,7 @@
         </div>
     </div>
 </div>
-
+@endsection
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     // モーダル処理
@@ -122,6 +166,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const taskId = button.dataset.taskId;
             const isBookmarked = button.dataset.bookmarked === 'true';
 
+            const countSpan = button.nextElementSibling; 
+            let currentCount = parseInt(countSpan.innerText);
+
             const url = `/bookmarks/${taskId}`;
             const method = isBookmarked ? 'DELETE' : 'POST';
 
@@ -138,8 +185,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     // UI更新
                     button.classList.toggle('btn-success');
                     button.classList.toggle('btn-outline-success');
-                    button.textContent = isBookmarked ? 'いいね' : 'いいねを取り消す';
+                    button.innerHTML = isBookmarked ? '<i class="fa-regular fa-heart  fa-xl"></i>' : '<i class="fa-solid fa-heart fa-xl"></i>';
                     button.dataset.bookmarked = isBookmarked ? 'false' : 'true';
+
+                    // 2) いいね数を加算/減算
+                    if (isBookmarked) {
+                        // 取り消し→いいね数 -1
+                        currentCount -= 1;
+                         countSpan.classList.remove('is-bookmarked');
+                    } else {
+                        // いいね→いいね数 +1
+                        currentCount += 1;
+                         countSpan.classList.add('is-bookmarked');
+                    }
+                    // 新しい数値を表示
+                    countSpan.innerText = currentCount;
                 } else {
                     alert('通信エラーが発生しました');
                 }
