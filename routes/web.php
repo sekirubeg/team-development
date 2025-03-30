@@ -36,7 +36,7 @@ Route::post('/bookmarks/{id}', [BookmarkController::class, 'store'])->name('book
 Route::delete('/bookmarks/{id}', [BookmarkController::class, 'destroy'])->name('bookmarks.unbookmark');
 
 
-// ルートをグループ化しており、全てのurlがmy_pageから始まり、authを適用させている
+
 Route::prefix('my_page')
     ->middleware('auth')
     ->group(function () {
