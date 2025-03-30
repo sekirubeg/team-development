@@ -38,10 +38,28 @@
 <h2 class="text-center">みんなのTo Do</h2>
 
 <form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 80%; margin:auto; ">
-    <div class="input-group">
-        <input type="text" name="search" class="form-control" placeholder="検索キーワード" value="{{ request('search') }}">
-        <button class="btn btn-primary" type="submit">検索</button>
+    <div class="row" >
+        <div class="input-group col-md-8" style="width:800px;">
+            <input type="text" name="search" class="form-control" placeholder="検索キーワード" value="{{ request('search') }}" >
+        </div>
+
+        <div class="col-md-2">
+            <div class="input-group">
+                <select name="sort" class="form-select">
+                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>新しい順</option>
+                    <option value="important" {{ request('sort') == 'important' ? 'selected' : '' }}>重要度順</option>
+                    <option value="good" {{ request('sort') == 'good' ? 'selected' : '' }}>いいね数順</option>
+                    <option value="deadline" {{ request('sort') == 'deadline' ? 'selected' : '' }}>期限日が近い順</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-primary" tye="submit">検索・ソート</button>
+        </div>
+
     </div>
+
 </form>
 
 <div class="container mt-4">
@@ -57,6 +75,7 @@
                     data-bs-toggle="modal" data-bs-target="#taskModal">
                     <div class="card">
                         <img src="{{ asset('img/sample.jpg') }}" class="card-img-top" alt="タスク画像">
+                     </a>
                         <div class="card-body">
                             <h5 class="card-title d-flex justify-content-between align-items-center text-center">
                                 <span>{{ $task->title }}</span>
@@ -70,36 +89,43 @@
                                 <a href="#" class="btn btn-danger">Delete</a>
                             @endif
 
-    @if (Auth::id() !== $task->user_id)
-    <div style="display:flex;  align-items: center;">
-        <button 
-            class="btn {{ Auth::user()->is_bookmark($task->id) ? 'btn-success' : 'btn-outline-success' }} bookmark-toggle" 
-            data-task-id="{{ $task->id }}"
-            data-bookmarked="{{ Auth::user()->is_bookmark($task->id) ? 'true' : 'false' }}"
-            style=" border-color:red; background-color:white; width:40px; padding:0; border: none;">
+                    @if (Auth::id() !== $task->user_id)
+                        <div style="display:flex; align-items: center;">
+                            @guest
+                                <a href="{{ route('login') }}" class="btn btn-outline-success" style="border: none; background: none;">
+                                    <i class="fa-regular fa-heart fa-xl"></i>
+                                </a>
+                                <span class="like-count" style="font-size:15px;">{{ $task->bookmarks_count }}</span>
+                            @else
+                                <button 
+                                    class="btn {{ Auth::user()->is_bookmark($task->id) ? 'btn-success' : 'btn-outline-success' }} bookmark-toggle"
+                                    data-task-id="{{ $task->id }}" 
+                                    data-bookmarked="{{ Auth::user()->is_bookmark($task->id) ? 'true' : 'false' }}"
+                                    style="border: none; background-color: white; width: 40px; padding: 0;"
+                                >
+                                    {!! Auth::user()->is_bookmark($task->id) 
+                                        ? '<i class="fa-solid fa-heart fa-xl"></i>' 
+                                        : '<i class="fa-regular fa-heart fa-xl"></i>' !!}
+                                </button>
+                                <span class="like-count {{ Auth::user()->is_bookmark($task->id) ? 'is-bookmarked' : '' }}" style="font-size:15px;">
+                                    {{ $task->bookmarks_count }}
+                                </span>
+                            @endguest
+                        </div>
 
-            {!! Auth::user()->is_bookmark($task->id) ?  '<i class="fa-solid fa-heart  fa-xl"></i>' : '<i class="fa-regular fa-heart  fa-xl"></i>' !!}
-
-        </button>
-                    <span class="like-count {{ Auth::user()->is_bookmark($task->id) ? 'is-bookmarked' : '' }}" style="font-size:15px;">
-            {{ $task->bookmarks_count }}
-            </span>
- </div>
- 
-
-</button>
-                            
-
-                       <button type="button" class="btn btn-primary">
-                          <a class="text-decoration-none" href="{{route('comment.create', $task)}}" style="color:white;">コメントする</a>
-                      </button> 
-                 @endif
+                        @guest
+                            <a href="{{ route('login') }}" class="btn btn-primary">ログインしてコメント</a>
+                        @else
+                            <a class="btn btn-primary text-decoration-none text-white" href="{{ route('comment.create', $task) }}">
+                                コメント表示
+                            </a>
+                        @endguest
+                    @endif
 
     </div>
 </div>
-
                     </div>
-                </a>
+               
             </div>
         @endforeach
     </div>
@@ -120,8 +146,6 @@
             </div>
             <div class="modal-body text-center"> <!-- タイトルと日時を中央寄せ -->
                 <img id="modalImg" src="" class="img-fluid mb-3 rounded" alt="タスク画像">
-                
-                
                 <div class="d-flex flex-column align-items-center">
                     <h5 id="modalTitle" class="mb-2"></h5>
                     <small class="text-muted" id="modalDate"></small>
@@ -159,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
     buttons.forEach(button => {
         button.addEventListener('click', async (e) => {
             e.preventDefault();
-            
+
             const taskId = button.dataset.taskId;
             const isBookmarked = button.dataset.bookmarked === 'true';
 

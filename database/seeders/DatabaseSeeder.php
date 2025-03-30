@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,8 +27,8 @@ class DatabaseSeeder extends Seeder
             'title' => "test",
             'content' => "testtesttest",
             'user_id' => 11,
-            'importance' => fake()->numberBetween(1, 5),
-            'limit' => fake()->date(),
+            'importance' => fake()->numberBetween(1, 3),
+            'limit' => Carbon::now()->addDays(rand(1, 30))->toDateString(),
         ]);
         Task::factory(20)->create();
     }
