@@ -19,6 +19,8 @@ return new class extends Migration
             $table->text('image_at')->nullable();
             $table->unsignedInteger('importance');
             $table->date('limit');
+            $table->boolean('is_completed')->default(false);
+            $table->boolean('is_trash')->default(false);
             $table->timestamps();
         });
     }
