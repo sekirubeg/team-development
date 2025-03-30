@@ -38,9 +38,9 @@
 <h2 class="text-center">みんなのTo Do</h2>
 
 <form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 80%; margin:auto; ">
-    <div class="row">
-        <div class="input-group col-md-6">
-            <input type="text" name="search" class="form-control" placeholder="検索キーワード" value="{{ request('search') }}">
+    <div class="row" >
+        <div class="input-group col-md-8" style="width:800px;">
+            <input type="text" name="search" class="form-control" placeholder="検索キーワード" value="{{ request('search') }}" >
         </div>
 
         <div class="col-md-2">
@@ -55,7 +55,7 @@
         </div>
 
         <div class="col-md-2">
-            <button class="btn btn-primary" type="submit">検索・ソート</button>
+            <button class="btn btn-primary" tye="submit">検索・ソート</button>
         </div>
 
     </div>
