@@ -65,7 +65,7 @@
 <div class="container mt-4">
     <div class="row mb-5">
         @foreach ($tasks as $task)
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-4" >
                 <a href="#" class="task-card" 
                     data-title="{{ $task->title }}" 
                     data-content="{{ $task->content }}" 
@@ -73,8 +73,9 @@
                     data-date="{{ $task->limit}}"  
                     style="display:block; text-decoration:none; color:black;"
                     data-bs-toggle="modal" data-bs-target="#taskModal">
-                    <div class="card">
-                        <img src="{{ asset('img/sample.jpg') }}" class="card-img-top" alt="タスク画像">
+                    <div class="card" style="border: 1px ridge #dee2e6;">
+                        <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="タスク画像" style="height: 280px; border-bottom:1px ridge #dee2e6">
+                        
                      </a>
                         <div class="card-body">
                             <h5 class="card-title d-flex justify-content-between align-items-center text-center">
