@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+
 
 class TaskController extends Controller
 {
@@ -38,8 +40,9 @@ class TaskController extends Controller
         'title' => 'required|string|max:255',
         'content' => 'nullable|string',
         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'priority' => 'required|integer|between:1,3',
-        'due_date' => 'nullable|date',
+        'importance' => 'required|integer|between:1,3',
+        'limit' => 'nullable|date',
+
     ]);
 
     
@@ -52,10 +55,10 @@ class TaskController extends Controller
     Task::create([
         'title' => $request->title,
         'content' => $request->content,
-        'user_id' => auth()->id(),
+        'user_id' => Auth::id(),
         'image_at' => $imagePath,
-        'importance' => $request->priority,
-        'limit' => $request->due_date,
+        'importance' => $request->importance,
+        'limit' => $request->limit,
     ]);
 
     return redirect()->route('tasks.index')->with('success', 'タスクを作成しました！');

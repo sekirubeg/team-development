@@ -68,7 +68,6 @@
                                 <a href="#" class="btn btn-danger">Delete</a>
                                 
                                 
-                                
     @if (Auth::id() !== $task->user_id)
     <div style="display:flex;     align-items: center;">
         <button 

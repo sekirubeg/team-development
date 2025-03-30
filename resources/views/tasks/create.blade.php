@@ -29,7 +29,7 @@
 
             <div class="form-group">
                 <label for="priority">優先度:</label>
-                <select id="priority" name="priority" class="form-control">
+                <select id="priority" name="importance" class="form-control">
                     <option value="1">低</option>
                     <option value="2">中</option>
                     <option value="3">高</option>
@@ -38,12 +38,12 @@
 
             <div class="form-group">
                 <label for="due_date">期限:</label>
-                <input type="date" id="due_date" name="due_date" class="form-control">
+                <input type="date" id="due_date" name="limit" class="form-control">
             </div>
 
             <div class="form-group">
                 <label for="image">画像アップロード:</label>
-                <input type="file" id="image" name="image" class="form-control-file">
+                <input type="file" id="image" name="image_at" class="form-control-file">
             </div>
 
             <button type="submit" class="btn btn-primary">作成</button>
