@@ -52,7 +52,7 @@
                     data-title="{{ $task->title }}" 
                     data-content="{{ $task->content }}" 
                     data-img="{{ asset('img/sample.jpg') }}"  
-                    data-date="{{ $task->created_at->format('Y/m/d H:i') }}"  
+                    data-date="{{ $task->limit}}"  
                     style="display:block; text-decoration:none; color:black;"
                     data-bs-toggle="modal" data-bs-target="#taskModal">
                     <div class="card">
@@ -60,15 +60,18 @@
                         <div class="card-body">
                             <h5 class="card-title d-flex justify-content-between align-items-center text-center">
                                 <span>{{ $task->title }}</span>
-                                <small class="text-muted">{{ $task->created_at->format('Y/m/d H:i') }}</small>
+                                <small class="text-muted">期限日：{{ $task->limit }}</small>
+                                <small class="text-muted">重要度：{{ $task->importance }}</small>
                             </h5>
                                 <p class="card-text text-start mb-3">{{ $task->content }}</p> <!-- ボタンとの間隔を空ける -->
                         <div class="d-flex justify-content-between">
+                             @if (Auth::id() == $task->user_id)
                                 <a href="#" class="btn btn-primary">Edit</a>
                                 <a href="#" class="btn btn-danger">Delete</a>
+                            @endif
 
     @if (Auth::id() !== $task->user_id)
-    <div style="display:flex;     align-items: center;">
+    <div style="display:flex;  align-items: center;">
         <button 
             class="btn {{ Auth::user()->is_bookmark($task->id) ? 'btn-success' : 'btn-outline-success' }} bookmark-toggle" 
             data-task-id="{{ $task->id }}" 
@@ -82,7 +85,7 @@
             {{ $task->bookmarks_count }}
             </span>
  </div>
-    @endif
+ 
 
 </button>
                             
@@ -90,7 +93,7 @@
                        <button type="button" class="btn btn-primary">
                           <a class="text-decoration-none" href="{{route('comment.create', $task)}}" style="color:white;">コメントする</a>
                       </button> 
-              
+                 @endif
 
     </div>
 </div>
