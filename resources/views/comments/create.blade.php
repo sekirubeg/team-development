@@ -13,7 +13,7 @@
                     style="display:block; text-decoration:none; color:black; width:350px; margin:40px auto ; "
                     data-bs-toggle="modal" data-bs-target="#taskModal">
                     <div class="card">
-                        <img src="{{ asset('img/sample.jpg') }}" class="card-img-top" alt="タスク画像">
+                        <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="タスク画像">
                         <div class="card-body">
                             <h5 class="card-title d-flex justify-content-between align-items-center text-center">
                                 <span>{{ $task->title }}</span>
