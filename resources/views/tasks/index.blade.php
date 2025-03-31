@@ -4,7 +4,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
-   
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 不要(Aiko)　--}}
     <style>
         .card-text, #modalContent {
@@ -82,7 +81,7 @@
                     <span class="like-count {{ Auth::user()->is_bookmark($task->id) ? 'is-bookmarked' : '' }}" style="font-size:15px;">
             {{ $task->bookmarks_count }}
             </span>
- </div>
+</div>
     @endif
 
 
@@ -93,10 +92,9 @@
 </button>
                             
 
-                       <button type="button" class="btn btn-primary">
-                          <a class="text-decoration-none" href="{{route('comment.create', $task)}}" style="color:white;">コメントする</a>
-                      </button> 
-              
+                    <button type="button" class="btn btn-primary">
+                        <a class="text-decoration-none" href="{{route('comment.create', $task)}}" style="color:white;">コメントする</a>
+                    </button> 
 
     </div>
 </div>
@@ -132,6 +130,7 @@
 
                 <p id="modalContent" class="text-start mt-3"></p> <!-- 左端から折り返し -->
             </div>
+            
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
             </div>
@@ -191,11 +190,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (isBookmarked) {
                         // 取り消し→いいね数 -1
                         currentCount -= 1;
-                         countSpan.classList.remove('is-bookmarked');
+                        countSpan.classList.remove('is-bookmarked');
                     } else {
                         // いいね→いいね数 +1
                         currentCount += 1;
-                         countSpan.classList.add('is-bookmarked');
+                        countSpan.classList.add('is-bookmarked');
                     }
                     // 新しい数値を表示
                     countSpan.innerText = currentCount;
