@@ -78,7 +78,7 @@
                                         {{ __('トップページ') }}
                                     </a>
 
-                                    <a href="#" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
+                                    <a href="{{ url('/task/create') }}" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
                                         {{ __('新規タスク追加') }}
                                     </a>
 

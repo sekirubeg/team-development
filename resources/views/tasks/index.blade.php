@@ -37,7 +37,7 @@
 @section('content')
 <h2 class="text-center">みんなのTo Do</h2>
 
-<form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 80%; margin:auto; ">
+<form action="{{ route('tasks') }}" class="mb-4" method="GET" style="width: 80%; margin:auto; ">
     <div class="input-group">
         <input type="text" name="search" class="form-control" placeholder="検索キーワード" value="{{ request('search') }}">
         <button class="btn btn-primary" type="submit">検索</button>
