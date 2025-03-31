@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\CommentNotification;
 
 class CommentController extends Controller
 {
@@ -20,17 +21,22 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'body' => 'required|string|max:255|',
+            'body' => 'required|string|max:255',
             'task_id' => 'required|exists:tasks,id',
         ]);
 
-       $task = Task::findOrFail($request->task_id);
+        $task = Task::with('user')->findOrFail($request->task_id);
+
         $comment = new Comment();
         $comment->body = $request->body;
         $comment->task_id = $task->id;
-        $comment->user_id = Auth::id(); // 現在のユーザーIDを取得
+        $comment->user_id = Auth::id();
         $comment->save();
-        // $task->comments()->save($comment);
+
+        // 自分以外のユーザーに通知を送信
+        if ($task->user && $task->user->id !== Auth::id()) {
+            $task->user->notify(new CommentNotification($task));
+        }
 
         return redirect()->route('tasks.index')->with('success', 'コメントを追加しました！');
     }

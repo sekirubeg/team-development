@@ -186,56 +186,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // いいね処理（AJAX）
     const buttons = document.querySelectorAll('.bookmark-toggle');
-    buttons.forEach(button => {
-        button.addEventListener('click', async (e) => {
-            e.preventDefault();
+   buttons.forEach(button => {
+    button.addEventListener('click', async (e) => {
+        e.preventDefault();
 
-            const taskId = button.dataset.taskId;
-            const isBookmarked = button.dataset.bookmarked === 'true';
+        const taskId = button.dataset.taskId;
+        const isBookmarked = button.dataset.bookmarked === 'true';
+        const countSpan = button.nextElementSibling;
+        let currentCount = parseInt(countSpan.innerText);
 
-            const countSpan = button.nextElementSibling; 
-            let currentCount = parseInt(countSpan.innerText);
+        // ✅ まずUIを即時変更
+        button.classList.toggle('btn-success');
+        button.classList.toggle('btn-outline-success');
+        button.innerHTML = isBookmarked
+            ? '<i class="fa-regular fa-heart fa-xl"></i>'
+            : '<i class="fa-solid fa-heart fa-xl"></i>';
+        button.dataset.bookmarked = isBookmarked ? 'false' : 'true';
 
+        currentCount = isBookmarked ? currentCount - 1 : currentCount + 1;
+        countSpan.innerText = currentCount;
+        countSpan.classList.toggle('is-bookmarked');
+
+        // 🔄 そのあとサーバー通信
+        try {
             const url = `/bookmarks/${taskId}`;
             const method = isBookmarked ? 'DELETE' : 'POST';
 
-            try {
-                const response = await fetch(url, {
-                    method: method,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Content-Type': 'application/json',
-                    },
-                });
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                },
+            });
 
-                if (response.ok) {
-                    // UI更新
-                    button.classList.toggle('btn-success');
-                    button.classList.toggle('btn-outline-success');
-                    button.innerHTML = isBookmarked ? '<i class="fa-regular fa-heart  fa-xl"></i>' : '<i class="fa-solid fa-heart fa-xl"></i>';
-                    button.dataset.bookmarked = isBookmarked ? 'false' : 'true';
-
-                    // 2) いいね数を加算/減算
-                    if (isBookmarked) {
-                        // 取り消し→いいね数 -1
-                        currentCount -= 1;
-                        countSpan.classList.remove('is-bookmarked');
-                    } else {
-                        // いいね→いいね数 +1
-                        currentCount += 1;
-                        countSpan.classList.add('is-bookmarked');
-                    }
-                    // 新しい数値を表示
-                    countSpan.innerText = currentCount;
-                } else {
-                    alert('通信エラーが発生しました');
-                }
-            } catch (error) {
-                alert('通信に失敗しました');
-                console.error(error);
+            if (!response.ok) {
+                alert('サーバーエラーが発生しました。');
+                // エラー時はUIを元に戻す
+                location.reload(); // または元の状態に戻す処理をここで入れる
             }
-        });
+        } catch (error) {
+            alert('通信に失敗しました');
+            console.error(error);
+            location.reload(); // 通信失敗したらリロードで整える
+        }
     });
+});
 });
 </script>
 
