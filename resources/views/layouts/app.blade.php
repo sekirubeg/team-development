@@ -28,9 +28,27 @@
         }
 
         .navbar .nav-link.dropdown-toggle {
-        font-size: 16px;
-        font-family: 'Nunito', sans-serif;
-    }
+            font-size: 16px;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+        }
+
+        /* h5, h6{
+            font-family: 'Nunito', sans-serif;
+            font-size: 15px; */
+        }
+
+        .navbar .navbar-brand,
+        .navbar .nav-link,
+        .navbar .dropdown-menu a {
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+        }
+    
     </style>
 </head>
 <body>
@@ -78,7 +96,7 @@
                                         {{ __('トップページ') }}
                                     </a>
 
-                                    <a href="#" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
+                                    <a href="{{ url('/task/create') }}" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
                                         {{ __('新規タスク追加') }}
                                     </a>
 

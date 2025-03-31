@@ -7,6 +7,12 @@
 
 @section('styles')
 
+<style>
+    .navbar .nav-link.dropdown-toggle {
+        font-size: 16px;
+        font-family: 'Nunito', sans-serif;
+    }
+</style>
     
 @endsection
 
