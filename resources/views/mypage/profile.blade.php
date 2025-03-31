@@ -39,24 +39,33 @@
         </div>
     </div>
     <h1>自分のタスク</h1>
+    <div class="container mt-4">
+    <div class="row">
     @foreach ($tasks as $task)
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="img/sample.jpg" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title">タイトル : {{ $task->title }}</h5>
-                            <p class="card-text">内容 : {{ $task->content }}</p>
-                            <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-primary">Edit</a>
-                            <form  method="post" action="{{ route('tasks.destroy', $task->id) }}" class="btn btn-danger">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="..." style="height: 280px; border-bottom:1px ridge #dee2e6">
+                    <div class="card-body">
+                        <h5 class="card-title">タイトル : {{ $task->title }}</h5>
+                        <p class="card-text">内容 : {{ $task->content }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                             @if (Auth::id() == $task->user_id)
+                                <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-primary">Edit</a>
+                                <form  method="post" action="{{ route('tasks.destroy', $task->id) }}" class="btn btn-danger" style="border-color:white;">
+                                {{-- ルーティングで指定したIDを渡す --}}
                                 @csrf
                                 @method('delete')
-                                <input type="submit" value="削除" onclick="return confirm('削除してよろしいですか?')" style="background-color: transparent; border: none; color: white;">
+                                <input type="submit" value="削除" onclick="return confirm('削除してよろしいですか?')" style="background-color: transparent; border: none; color: white; border-color:white;">
 
                             </form>
-                        </div>
+                            @endif
                     </div>
                 </div>
+            </div>
     @endforeach
+      </div>
+</div>
     <h1>いいねをつけたタスク</h1>
     <div class="container mt-4">
     <div class="row">

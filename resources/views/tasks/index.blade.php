@@ -35,9 +35,46 @@
 @endsection
 
 @section('content')
+@if($todayTasks->count())
+    <div class="alert alert-warning text-center">
+        <strong>本日が期限のあなたのタスク</strong>
+    </div>
+        <div class="container mt-4">
+    <div class="row">
+        @foreach ($todayTasks as $task)
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="..." style="height: 280px; border-bottom:1px ridge #dee2e6">
+                    <div class="card-body">
+                        <h5 class="card-title">タイトル : {{ $task->title }}</h5>
+                        <p class="card-text">内容 : {{ $task->content }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                             @if (Auth::id() == $task->user_id)
+                                <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-primary">Edit</a>
+                                <form  method="post" action="{{ route('tasks.destroy', $task->id) }}" class="btn btn-danger" style="border-color:white;">
+                                {{-- ルーティングで指定したIDを渡す --}}
+                                @csrf
+                                @method('delete')
+                                <input type="submit" value="削除" onclick="return confirm('削除してよろしいですか?')" style="background-color: transparent; border: none; color: white; border-color:white;">
+
+                            </form>
+                                <form method="POST" action="{{ route('tasks.complete', $task->id) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                <button type="submit" class="btn btn-success mt-2"onclick="return confirm('完了してよろしいですか？')" >完了</button>
+                                </form>
+                            @endif
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+        </div>
+@endif
 <h2 class="text-center">みんなのTo Do</h2>
 
-<form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 80%; margin:auto; ">
+<form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 85%; margin:auto; ">
     <div class="row" >
         <div class="input-group col-md-8" style="width:800px;">
             <input type="text" name="search" class="form-control" placeholder="検索キーワード" value="{{ request('search') }}" >
@@ -61,6 +98,10 @@
     </div>
 
 </form>
+@auth
+    <a href="{{ route('tasks.completed') }}" class="btn btn-outline-secondary" style="margin: auto; display:block; width:200px;" >完了済みタスクを見る</a>
+@endauth
+
 
 <div class="container mt-4">
     <div class="row mb-5">
@@ -75,7 +116,7 @@
                     data-bs-toggle="modal" data-bs-target="#taskModal">
                     <div class="card" style="border: 1px ridge #dee2e6;">
                         <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="タスク画像" style="height: 280px; border-bottom:1px ridge #dee2e6">
-                        
+
                      </a>
                         <div class="card-body">
                             <h5 class="card-title d-flex justify-content-between align-items-center text-center">
@@ -92,6 +133,11 @@
                                 @method('delete')
                                 <input type="submit" value="削除" onclick="return confirm('削除してよろしいですか?')" style="background-color: transparent; border: none; color: white;">
 
+                            </form>
+                            <form method="POST" action="{{ route('tasks.complete', $task->id) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                <button type="submit" class="btn btn-success mt-2"onclick="return confirm('完了してよろしいですか？')" >完了</button>
                             </form>
                             @endif
 
