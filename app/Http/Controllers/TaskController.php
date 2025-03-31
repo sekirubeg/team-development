@@ -6,15 +6,24 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-
+use Illuminate\Support\Collection;
 
 class TaskController extends Controller
 {
     public function index(Request $request)
     {
+        $todayTasks = collect();
+        // 今日が期限の自分のタスク（未完了）
+        if (Auth::check()) {
+            $todayTasks = Task::where('user_id', Auth::id())
+                ->whereDate('limit', '=', now()) // 期限が今日
+                ->where('is_completed', false)
+                ->get();
+        }
+
         $query = Task::with('comments')
             ->withCount('bookmarks')
-            ->whereDate('limit', '>=', now())         // 期限が今日以降
+            ->whereDate('limit', '>', now())         // 期限が今日以降
             ->where('is_completed', false);           // 未完了のみ
             
         if($request->has('search') && $request->filled('search')){
@@ -46,7 +55,8 @@ class TaskController extends Controller
         if ($request->filled('search')) {
             $tasks->appends(['search' => $request->search]);
         }
-        return view('tasks.index', compact('tasks'));
+
+        return view('tasks.index', compact('tasks', 'todayTasks')); 
     }
 
     public function create()
@@ -153,5 +163,32 @@ class TaskController extends Controller
         $task->comments()->delete();
         $task->delete();
         return redirect()->route('home')->with('message', '投稿を削除しました');
+    }
+
+    
+    public function complete($id)
+    {
+        $task = Task::findOrFail($id);
+
+        if ($task->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $task->is_completed = true;
+        $task->save();
+
+        return redirect()->back()->with('success', 'タスクを完了しました！');
+    }
+
+    public function completed()
+    {
+        $user = Auth::user();
+
+        $tasks = Task::where('user_id', $user->id)
+            ->where('is_completed', true)
+            ->orderBy('limit', 'asc')
+            ->paginate(6);
+
+        return view('tasks.completed', compact('tasks'));
     }
 }

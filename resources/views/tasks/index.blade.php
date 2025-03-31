@@ -35,6 +35,43 @@
 @endsection
 
 @section('content')
+@if($todayTasks->count())
+    <div class="alert alert-warning text-center">
+        <strong>本日が期限のあなたのタスク</strong>
+    </div>
+        <div class="container mt-4">
+    <div class="row">
+        @foreach ($todayTasks as $task)
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="..." style="height: 280px; border-bottom:1px ridge #dee2e6">
+                    <div class="card-body">
+                        <h5 class="card-title">タイトル : {{ $task->title }}</h5>
+                        <p class="card-text">内容 : {{ $task->content }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                             @if (Auth::id() == $task->user_id)
+                                <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-primary">Edit</a>
+                                <form  method="post" action="{{ route('tasks.destroy', $task->id) }}" class="btn btn-danger" style="border-color:white;">
+                                {{-- ルーティングで指定したIDを渡す --}}
+                                @csrf
+                                @method('delete')
+                                <input type="submit" value="削除" onclick="return confirm('削除してよろしいですか?')" style="background-color: transparent; border: none; color: white; border-color:white;">
+
+                            </form>
+                                <form method="POST" action="{{ route('tasks.complete', $task->id) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                <button type="submit" class="btn btn-success mt-2"onclick="return confirm('完了してよろしいですか？')" >完了</button>
+                                </form>
+                            @endif
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+        </div>
+@endif
 <h2 class="text-center">みんなのTo Do</h2>
 
 <form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 80%; margin:auto;">
@@ -51,8 +88,13 @@
             <option value="good" {{ request('sort') == 'good' ? 'selected' : '' }}>いいね数順</option>
             <option value="deadline" {{ request('sort') == 'deadline' ? 'selected' : '' }}>期限日が近い順</option>
         </select>
+
     </div>
 </form>
+@auth
+    <a href="{{ route('tasks.completed') }}" class="btn btn-outline-secondary" style="margin: auto; display:block; width:200px;" >完了済みタスクを見る</a>
+@endauth
+
 
 <div class="container mt-4">
     <div class="row mb-5">
@@ -67,7 +109,7 @@
                     data-bs-toggle="modal" data-bs-target="#taskModal">
                     <div class="card" style="border: 1px ridge #dee2e6;">
                         <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="タスク画像" style="height: 280px; border-bottom:1px ridge #dee2e6">
-                        
+
                      </a>
                         <div class="card-body">
                         <div class="d-flex justify-content-between text-muted px-2 pt-2" style="font-size: 0.8rem;">
@@ -96,6 +138,11 @@
                                         <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2H5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1h2.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0 0 1z"/>
                                     </svg>
                                 </button>
+                            </form>
+                            <form method="POST" action="{{ route('tasks.complete', $task->id) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                <button type="submit" class="btn btn-success mt-2"onclick="return confirm('完了してよろしいですか？')" >完了</button>
                             </form>
                             @endif
 
