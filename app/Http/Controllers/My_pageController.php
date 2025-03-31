@@ -12,9 +12,13 @@ class My_pageController extends Controller
     public function index()
     {
         $id = Auth::id();
-        $user = DB::table('users')->find($id);
-        $tasks = DB::table('tasks')->where('user_id', $id)->get();
-        return view('mypage.profile', ['user' => $user, 'tasks' => $tasks]);
+        $user = User::with(['tasks', 'bookmarks' => function ($query) {
+            $query->withCount('bookmarks');
+        }])->find($id);
+
+        $tasks = $user->tasks;
+        $likedTasks = $user->bookmarks;
+        return view('mypage.profile', compact('user', 'tasks', 'likedTasks'));
     }
 
     //マイページ編集画面表示

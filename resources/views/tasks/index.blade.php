@@ -37,45 +37,59 @@
 <h2 class="text-center">みんなのTo Do</h2>
 
 <form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 80%; margin:auto; ">
-    <div class="input-group">
-        <input type="text" name="search" class="form-control" placeholder="検索キーワード" value="{{ request('search') }}">
-        <button class="btn btn-primary" type="submit">検索</button>
+    <div class="row" >
+        <div class="input-group col-md-8" style="width:800px;">
+            <input type="text" name="search" class="form-control" placeholder="検索キーワード" value="{{ request('search') }}" >
+        </div>
+
+        <div class="col-md-2">
+            <div class="input-group">
+                <select name="sort" class="form-select">
+                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>新しい順</option>
+                    <option value="important" {{ request('sort') == 'important' ? 'selected' : '' }}>重要度順</option>
+                    <option value="good" {{ request('sort') == 'good' ? 'selected' : '' }}>いいね数順</option>
+                    <option value="deadline" {{ request('sort') == 'deadline' ? 'selected' : '' }}>期限日が近い順</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-primary" tye="submit">検索・ソート</button>
+        </div>
+
     </div>
+
 </form>
 
 <div class="container mt-4">
     <div class="row mb-5">
         @foreach ($tasks as $task)
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4 mb-4" >
                 <a href="#" class="task-card" 
                     data-title="{{ $task->title }}" 
                     data-content="{{ $task->content }}" 
                     data-img="{{ asset('img/sample.jpg') }}"  
-                    data-date="{{ $task->created_at->format('Y/m/d H:i') }}"  
+                    data-date="{{ $task->limit}}"  
                     style="display:block; text-decoration:none; color:black;"
                     data-bs-toggle="modal" data-bs-target="#taskModal">
-                    <div class="card">
-                        <img src="{{ asset('img/sample.jpg') }}" class="card-img-top" alt="タスク画像">
+                    <div class="card" style="border: 1px ridge #dee2e6;">
+                        <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="タスク画像" style="height: 280px; border-bottom:1px ridge #dee2e6">
+                        
+                     </a>
                         <div class="card-body">
                             <h5 class="card-title d-flex justify-content-between align-items-center text-center">
                                 <span>{{ $task->title }}</span>
-                                <small class="text-muted">{{ $task->created_at->format('Y/m/d H:i') }}</small>
+                                <small class="text-muted">期限日：{{ $task->limit }}</small>
+                                <small class="text-muted">重要度：{{ $task->importance }}</small>
                             </h5>
                                 <p class="card-text text-start mb-3">{{ $task->content }}</p> <!-- ボタンとの間隔を空ける -->
                         <div class="d-flex justify-content-between">
-                                <a href="#" class="btn btn-primary">Edit</a>
-                                <a href="#" class="btn btn-danger">Delete</a>
-                                
-                                
-    @if (Auth::id() !== $task->user_id)
-    <div style="display:flex;     align-items: center;">
-        <button 
-            class="btn {{ Auth::user()->is_bookmark($task->id) ? 'btn-success' : 'btn-outline-success' }} bookmark-toggle" 
-            data-task-id="{{ $task->id }}" 
-            data-bookmarked="{{ Auth::user()->is_bookmark($task->id) ? 'true' : 'false' }}"
-            style=" border-color:red; background-color:white; width:40px; padding:0; border: none;">
-            
-            {!! Auth::user()->is_bookmark($task->id) ?  '<i class="fa-solid fa-heart  fa-xl"></i>' : '<i class="fa-regular fa-heart  fa-xl"></i>' !!}
+                             @if (Auth::id() == $task->user_id)
+                                <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-primary">Edit</a>
+                                <form  method="post" action="{{ route('tasks.destroy', $task->id) }}" class="btn btn-danger">
+                                @csrf
+                                @method('delete')
+                                <input type="submit" value="削除" onclick="return confirm('削除してよろしいですか?')" style="background-color: transparent; border: none; color: white;">
 
         </button>
                     <span class="like-count {{ Auth::user()->is_bookmark($task->id) ? 'is-bookmarked' : '' }}" style="font-size:15px;">
@@ -84,23 +98,43 @@
 </div>
     @endif
 
+                    @if (Auth::id() !== $task->user_id)
+                        <div style="display:flex; align-items: center;">
+                            @guest
+                                <a href="{{ route('login') }}" class="btn btn-outline-success" style="border: none; background: none;">
+                                    <i class="fa-regular fa-heart fa-xl"></i>
+                                </a>
+                                <span class="like-count" style="font-size:15px;">{{ $task->bookmarks_count }}</span>
+                            @else
+                                <button 
+                                    class="btn {{ Auth::user()->is_bookmark($task->id) ? 'btn-success' : 'btn-outline-success' }} bookmark-toggle"
+                                    data-task-id="{{ $task->id }}" 
+                                    data-bookmarked="{{ Auth::user()->is_bookmark($task->id) ? 'true' : 'false' }}"
+                                    style="border: none; background-color: white; width: 40px; padding: 0;"
+                                >
+                                    {!! Auth::user()->is_bookmark($task->id) 
+                                        ? '<i class="fa-solid fa-heart fa-xl"></i>' 
+                                        : '<i class="fa-regular fa-heart fa-xl"></i>' !!}
+                                </button>
+                                <span class="like-count {{ Auth::user()->is_bookmark($task->id) ? 'is-bookmarked' : '' }}" style="font-size:15px;">
+                                    {{ $task->bookmarks_count }}
+                                </span>
+                            @endguest
+                        </div>
 
-
-
-
-
-</button>
-                            
-
-                    <button type="button" class="btn btn-primary">
-                        <a class="text-decoration-none" href="{{route('comment.create', $task)}}" style="color:white;">コメントする</a>
-                    </button> 
+                        @guest
+                            <a href="{{ route('login') }}" class="btn btn-primary">ログインしてコメント</a>
+                        @else
+                            <a class="btn btn-primary text-decoration-none text-white" href="{{ route('comment.create', $task) }}">
+                                コメント表示
+                            </a>
+                        @endguest
+                    @endif
 
     </div>
 </div>
-
                     </div>
-                </a>
+               
             </div>
         @endforeach
     </div>
@@ -121,8 +155,6 @@
             </div>
             <div class="modal-body text-center"> <!-- タイトルと日時を中央寄せ -->
                 <img id="modalImg" src="" class="img-fluid mb-3 rounded" alt="タスク画像">
-                
-                
                 <div class="d-flex flex-column align-items-center">
                     <h5 id="modalTitle" class="mb-2"></h5>
                     <small class="text-muted" id="modalDate"></small>
@@ -158,55 +190,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // いいね処理（AJAX）
     const buttons = document.querySelectorAll('.bookmark-toggle');
-    buttons.forEach(button => {
-        button.addEventListener('click', async (e) => {
-            e.preventDefault();
-            const taskId = button.dataset.taskId;
-            const isBookmarked = button.dataset.bookmarked === 'true';
+   buttons.forEach(button => {
+    button.addEventListener('click', async (e) => {
+        e.preventDefault();
 
-            const countSpan = button.nextElementSibling; 
-            let currentCount = parseInt(countSpan.innerText);
+        const taskId = button.dataset.taskId;
+        const isBookmarked = button.dataset.bookmarked === 'true';
+        const countSpan = button.nextElementSibling;
+        let currentCount = parseInt(countSpan.innerText);
 
+        // ✅ まずUIを即時変更
+        button.classList.toggle('btn-success');
+        button.classList.toggle('btn-outline-success');
+        button.innerHTML = isBookmarked
+            ? '<i class="fa-regular fa-heart fa-xl"></i>'
+            : '<i class="fa-solid fa-heart fa-xl"></i>';
+        button.dataset.bookmarked = isBookmarked ? 'false' : 'true';
+
+        currentCount = isBookmarked ? currentCount - 1 : currentCount + 1;
+        countSpan.innerText = currentCount;
+        countSpan.classList.toggle('is-bookmarked');
+
+        // 🔄 そのあとサーバー通信
+        try {
             const url = `/bookmarks/${taskId}`;
             const method = isBookmarked ? 'DELETE' : 'POST';
 
-            try {
-                const response = await fetch(url, {
-                    method: method,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'Content-Type': 'application/json',
-                    },
-                });
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                },
+            });
 
-                if (response.ok) {
-                    // UI更新
-                    button.classList.toggle('btn-success');
-                    button.classList.toggle('btn-outline-success');
-                    button.innerHTML = isBookmarked ? '<i class="fa-regular fa-heart  fa-xl"></i>' : '<i class="fa-solid fa-heart fa-xl"></i>';
-                    button.dataset.bookmarked = isBookmarked ? 'false' : 'true';
-
-                    // 2) いいね数を加算/減算
-                    if (isBookmarked) {
-                        // 取り消し→いいね数 -1
-                        currentCount -= 1;
-                        countSpan.classList.remove('is-bookmarked');
-                    } else {
-                        // いいね→いいね数 +1
-                        currentCount += 1;
-                        countSpan.classList.add('is-bookmarked');
-                    }
-                    // 新しい数値を表示
-                    countSpan.innerText = currentCount;
-                } else {
-                    alert('通信エラーが発生しました');
-                }
-            } catch (error) {
-                alert('通信に失敗しました');
-                console.error(error);
+            if (!response.ok) {
+                alert('サーバーエラーが発生しました。');
+                // エラー時はUIを元に戻す
+                location.reload(); // または元の状態に戻す処理をここで入れる
             }
-        });
+        } catch (error) {
+            alert('通信に失敗しました');
+            console.error(error);
+            location.reload(); // 通信失敗したらリロードで整える
+        }
     });
+});
 });
 </script>
 
