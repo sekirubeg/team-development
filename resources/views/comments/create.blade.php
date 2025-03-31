@@ -33,7 +33,7 @@
                         <img src="{{ asset('storage/' . Auth::user()->image_at) }}" alt="プロフィール画像" class="profile-icon-small" style="margin-right: 15px;">
                           <p style="margin-bottom: 0;">{{ $comment->user->name }}</p>
                           </div>
-                          <p style="font-size:18px;">{{ $comment->body }}</p>
+                          <p style="font-size:18px; margin-bottom:5px;">{{ $comment->body }}</p>
                           <small class="text-muted">
                               投稿日：{{ $comment->created_at }}
                           </small>
