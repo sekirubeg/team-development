@@ -13,7 +13,7 @@
                     style="display:block; text-decoration:none; color:black; width:350px; margin:40px auto ; "
                     data-bs-toggle="modal" data-bs-target="#taskModal">
                     <div class="card">
-                        <img src="{{ asset('img/sample.jpg') }}" class="card-img-top" alt="タスク画像">
+                        <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="タスク画像">
                         <div class="card-body">
                             <h5 class="card-title d-flex justify-content-between align-items-center text-center">
                                 <span>{{ $task->title }}</span>
@@ -34,9 +34,18 @@
                           <p style="margin-bottom: 0;">{{ $comment->user->name }}</p>
                           </div>
                           <p style="font-size:18px; margin-bottom:5px;">{{ $comment->body }}</p>
+                          <div style="display: flex; justify-content: space-between; align-items: center;">
                           <small class="text-muted">
                               投稿日：{{ $comment->created_at }}
                           </small>
+                          @if (Auth::user()->id === $comment->user_id)
+                                <form action="{{ route('comment.destroy', $comment->id) }}" method="POST" >
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-sm" >削除する</button>
+                                </form>
+                            @endif
+                            </div>
                       </div>
                   </div>
               @empty

@@ -20,6 +20,7 @@
         "vue": "^3.2.37"
     },
     "dependencies": {
+        "bootstrap-icons": "^1.11.3",
         "save-dev": "^0.0.1-security"
     }
 }
