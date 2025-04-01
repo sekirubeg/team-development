@@ -75,16 +75,23 @@
                     <div class="card" style="border: 1px ridge #dee2e6;">
                         <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="タスク画像" style="height: 280px; border-bottom:1px ridge #dee2e6">
                         
-                     </a>
+                    </a>
                         <div class="card-body">
                             <h5 class="card-title d-flex justify-content-between align-items-center text-center">
                                 <span>{{ $task->title }}</span>
                                 <small class="text-muted">期限日：{{ $task->limit }}</small>
                                 <small class="text-muted">重要度：{{ $task->importance }}</small>
                             </h5>
+                            <h6>タグ:</h6>
+<div>
+
+    @foreach($task->tags as $tag)
+        <span>{{ $tag->name }}</span>
+    @endforeach
+</div>
                                 <p class="card-text text-start mb-3">{{ $task->content }}</p> <!-- ボタンとの間隔を空ける -->
                         <div class="d-flex justify-content-between">
-                             @if (Auth::id() == $task->user_id)
+                            @if (Auth::id() == $task->user_id)
                                 <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-primary">Edit</a>
                                 <form  method="post" action="{{ route('tasks.destroy', $task->id) }}" class="btn btn-danger">
                                 @csrf

@@ -22,9 +22,13 @@
                 <label for="content">内容:</label>
                 <textarea id="content" name="content" rows="4" class="form-control"></textarea>
             </div>
-             @error('content')
+            @error('content')
                 <div class="text-danger mt-2 mb-2">{{ $message }}</div>
             @enderror
+
+            <label for="tag_name">タグ（スペース区切り: 仕事 勉強）:</label>
+            <input type="text" name="tag_name" placeholder="仕事 勉強">
+
 
             <div class="form-group">
                 <label for="priority">優先度:</label>
@@ -35,7 +39,7 @@
                     <option value="3">高</option>
                 </select>
             </div>
-             @error('importance')
+            @error('importance')
                 <div class="text-danger mt-2 mb-2">{{ $message }}</div>
             @enderror
 
