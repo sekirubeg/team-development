@@ -34,9 +34,18 @@
                           <p style="margin-bottom: 0;">{{ $comment->user->name }}</p>
                           </div>
                           <p style="font-size:18px; margin-bottom:5px;">{{ $comment->body }}</p>
+                          <div style="display: flex; justify-content: space-between; align-items: center;">
                           <small class="text-muted">
                               投稿日：{{ $comment->created_at }}
                           </small>
+                          @if (Auth::user()->id === $comment->user_id)
+                                <form action="{{ route('comment.destroy', $comment->id) }}" method="POST" >
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-sm" >削除する</button>
+                                </form>
+                            @endif
+                            </div>
                       </div>
                   </div>
               @empty
