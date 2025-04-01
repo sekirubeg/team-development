@@ -13,16 +13,18 @@ return new class extends Migration
     {
         Schema::create('task_tags', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->constrained();
-            $table->foreignId('tag_id')->constrained();
+            $table->foreignId('task_id')->constrained('tasks')->onDelete('cascade');
+            $table->foreignId('tag_id')->constrained('tags')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('task_tags');
+    }
+    public function tags()
+    {
+        return $this->belongToMany(App\tags);
     }
 };

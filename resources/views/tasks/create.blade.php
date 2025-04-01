@@ -29,6 +29,16 @@
                 @enderror
             </div>
 
+            @error('content')
+                <div class="text-danger mt-2 mb-2">{{ $message }}</div>
+            @enderror
+
+            <label for="tag_name">タグ（スペース区切り: 仕事 勉強）:</label>
+            <input type="text" name="tag_name" placeholder="仕事 勉強">
+
+
+          
+
             {{-- 優先度 --}}
             <div class="mb-3">
                 <label for="priority" class="form-label">優先度:</label>
@@ -37,11 +47,14 @@
                     <option value="1" {{ old('importance') == 1 ? 'selected' : '' }}>低</option>
                     <option value="2" {{ old('importance') == 2 ? 'selected' : '' }}>中</option>
                     <option value="3" {{ old('importance') == 3 ? 'selected' : '' }}>高</option>
+
                 </select>
                 @error('importance')
                     <div class="text-danger mt-1">{{ $message }}</div>
                 @enderror
             </div>
+
+
 
             {{-- 期限 --}}
             <div class="mb-3">
