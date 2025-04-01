@@ -60,7 +60,7 @@
                             <form method="post" action="{{ route('tasks.destroy', $task->id) }}" style="margin-bottom: 0;">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn btn-outline-danger d-flex justify-content-center align-items-center p-0" style="width: 40px; height: 40px;">
+                            <button type="submit" class="btn btn-outline-danger d-flex justify-content-center align-items-center p-0" style="width: 40px; height: 40px;" onclick="return confirm('削除してよろしいですか？')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                      class="bi bi-trash" viewBox="0 0 16 16" style="vertical-align: middle;">
                                     <path d="M5.5 5.5a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0v-6zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0v-6z"/>
@@ -131,7 +131,7 @@
                         </div>
                         <h5 class="card-title text-center mt-2">{{ $task->title }}</h5>
 
-                                {{-- <p class="card-text text-start mb-3">{{ $task->content }}</p> <!-- ボタンとの間隔を空ける --> 0331Aiko ここいらないかも！--}}
+
 
                         <div class="d-flex justify-content-between">
                              @if (Auth::id() == $task->user_id)
