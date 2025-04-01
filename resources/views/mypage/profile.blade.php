@@ -119,12 +119,41 @@
                     <h5 class="card-title">{{ $task->title }}</h5>
                     <p class="card-text">{{ Str::limit($task->content, 100) }}</p>
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-sm btn-outline-primary">編集</a>
-                        <form method="post" action="{{ route('tasks.destroy', $task->id) }}">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('削除しますか？')">削除</button>
-                        </form>
+
+                             @if (Auth::id() == $task->user_id)
+                                
+                             <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-outline-primary d-flex justify-content-center align-items-center p-0" style="width: 40px; height: 40px; background-color: transparent;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                     class="bi bi-pencil" viewBox="0 0 16 16" style="vertical-align: middle; color: var(--bs-primary);">
+                                    <path d="M12.146 0.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-1.5 1.5-3-3 1.5-1.5a.5.5 0 0 1 0-.708zM0 13.5V16h2.5l9.854-9.854-2.5-2.5L0 13.5z"/>
+                                </svg>
+                            </a>
+
+                            <form method="post" action="{{ route('tasks.destroy', $task->id) }}" style="margin-bottom: 0;">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-outline-danger d-flex justify-content-center align-items-center p-0" style="width: 40px; height: 40px; background-color: transparent;" onclick="return confirm('削除してよろしいですか？')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-trash" viewBox="0 0 16 16" style="vertical-align: middle; color: var(--bs-danger);">
+                                        <path d="M5.5 5.5a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0v-6zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0v-6z"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2H5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1h2.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0 0 1z"/>
+                                    </svg>
+                                </button>
+                            </form>
+
+                            <form method="POST" action="{{ route('tasks.complete', $task->id) }}">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-outline-success d-flex justify-content-center align-items-center p-0 mx-2" style="width: 40px; height: 40px; background-color: transparent;" onclick="return confirm('完了してよろしいですか？')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-check-square-fill" viewBox="0 0 16 16"  style="vertical-align: middle; color: var(--bs-success);">
+                                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                                    </svg>
+                                </button>
+                            </form>
+
+                            @endif
+
                     </div>
                 </div>
             </div>

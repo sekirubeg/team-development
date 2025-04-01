@@ -4,15 +4,30 @@
     タスク変更
 @endsection
 
+@section('style')
+<style>
+    .navbar .nav-link.dropdown-toggle {
+        font-size: 16px;
+        font-family: 'Nunito', sans-serif;
+    }
+</style>
+    
+@endsection
+
 @section('content')
 <div class="container mt-5" style="max-width: 800px;">
     {{-- リダイレクトの際withで指定した文字を出力 --}}
     <div class="card shadow-lg p-4">
         <h2 class="mb-4 text-center">タスクの編集</h2>
 
+
+
+
+
         <form method="POST" action="{{ route('tasks.update', $task) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+
 
             {{-- タイトル --}}
             <div class="mb-3">

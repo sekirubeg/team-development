@@ -40,7 +40,7 @@
         <strong>本日が期限のあなたのタスク</strong>
     </div>
         <div class="container mt-4">
-    <div class="row">
+    <div class="row mb-5">
         @foreach ($todayTasks as $task)
             <div class="col-md-4 mb-4">
                 <div class="card">
@@ -51,19 +51,32 @@
                     </div>
                     <div class="d-flex justify-content-between">
                              @if (Auth::id() == $task->user_id)
-                                <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-primary">Edit</a>
-                                <form  method="post" action="{{ route('tasks.destroy', $task->id) }}" class="btn btn-danger" style="border-color:white;">
-                                {{-- ルーティングで指定したIDを渡す --}}
+                             <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-outline-primary d-flex justify-content-center align-items-center p-0 mx-2" style="width: 40px; height: 40px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                     class="bi bi-pencil" viewBox="0 0 16 16" style="vertical-align: middle;">
+                                    <path d="M12.146 0.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-1.5 1.5-3-3 1.5-1.5a.5.5 0 0 1 0-.708zM0 13.5V16h2.5l9.854-9.854-2.5-2.5L0 13.5z"/>
+                                </svg>
+                            </a>
+                            <form method="post" action="{{ route('tasks.destroy', $task->id) }}" style="margin-bottom: 0;">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn btn-outline-danger d-flex justify-content-center align-items-center p-0" style="width: 40px; height: 40px;" onclick="return confirm('削除してよろしいですか？')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                     class="bi bi-trash" viewBox="0 0 16 16" style="vertical-align: middle;">
+                                    <path d="M5.5 5.5a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0v-6zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0v-6z"/>
+                                    <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2H5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1h2.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0 0 1z"/>
+                                </svg>
+                            </button>
+                        </form>
+                        <form method="POST" action="{{ route('tasks.complete', $task->id) }}">
                                 @csrf
-                                @method('delete')
-                                <input type="submit" value="削除" onclick="return confirm('削除してよろしいですか?')" style="background-color: transparent; border: none; color: white; border-color:white;">
-
-                            </form>
-                                <form method="POST" action="{{ route('tasks.complete', $task->id) }}">
-                                    @csrf
-                                    @method('PATCH')
-                                <button type="submit" class="btn btn-success mt-2"onclick="return confirm('完了してよろしいですか？')" >完了</button>
-                                </form>
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-outline-success d-flex justify-content-center align-items-center p-0 mx-2" style="width: 40px; height: 40px;" onclick="return confirm('完了してよろしいですか？')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-check-square-fill" viewBox="0 0 16 16" style="vertical-align: middle;">
+                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                                </button>
+                        </form>
                             @endif
                     </div>
                 </div>
@@ -74,29 +87,22 @@
 @endif
 <h2 class="text-center">みんなのTo Do</h2>
 
-<form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 85%; margin:auto; ">
-    <div class="row" >
-        <div class="input-group col-md-8" style="width:800px;">
-            <input type="text" name="search" class="form-control" placeholder="検索キーワード" value="{{ request('search') }}" >
-        </div>
-
-        <div class="col-md-2">
-            <div class="input-group">
-                <select name="sort" class="form-select">
-                    <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>新しい順</option>
-                    <option value="important" {{ request('sort') == 'important' ? 'selected' : '' }}>重要度順</option>
-                    <option value="good" {{ request('sort') == 'good' ? 'selected' : '' }}>いいね数順</option>
-                    <option value="deadline" {{ request('sort') == 'deadline' ? 'selected' : '' }}>期限日が近い順</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <button class="btn btn-primary" tye="submit">検索・ソート</button>
-        </div>
+<form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 80%; margin:auto;">
+    <div class="d-flex align-items-center gap-2">
+        <input type="text" name="search" class="form-control flex-grow-1" placeholder="検索キーワード" value="{{ request('search') }}">
+        <button class="btn btn-primary d-flex justify-content-center align-items-center p-0" type="submit" style="width: 48px; height: 45px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+        </button>
+        <select name="sort" class="form-select" style="width: 180px;">
+            <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>新しい順</option>
+            <option value="important" {{ request('sort') == 'important' ? 'selected' : '' }}>重要度順</option>
+            <option value="good" {{ request('sort') == 'good' ? 'selected' : '' }}>いいね数順</option>
+            <option value="deadline" {{ request('sort') == 'deadline' ? 'selected' : '' }}>期限日が近い順</option>
+        </select>
 
     </div>
-
 </form>
 @auth
     <a href="{{ route('tasks.completed') }}" class="btn btn-outline-secondary" style="margin: auto; display:block; width:200px;" >完了済みタスクを見る</a>
@@ -119,26 +125,43 @@
 
                      </a>
                         <div class="card-body">
-                            <h5 class="card-title d-flex justify-content-between align-items-center text-center">
-                                <span>{{ $task->title }}</span>
-                                <small class="text-muted">期限日：{{ $task->limit }}</small>
-                                <small class="text-muted">重要度：{{ $task->importance }}</small>
-                            </h5>
-                                <p class="card-text text-start mb-3">{{ $task->content }}</p> <!-- ボタンとの間隔を空ける -->
+                        <div class="d-flex justify-content-between text-muted px-2 pt-2" style="font-size: 0.8rem;">
+                            <small>期限日：{{ $task->limit }}</small>
+                            <small>重要度：{{ $task->importance }}</small>
+                        </div>
+                        <h5 class="card-title text-center mt-2">{{ $task->title }}</h5>
+
+
+
                         <div class="d-flex justify-content-between">
                              @if (Auth::id() == $task->user_id)
-                                <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-primary">Edit</a>
-                                <form  method="post" action="{{ route('tasks.destroy', $task->id) }}" class="btn btn-danger">
+                                <a href="{{ route("tasks.edit", $task->id) }}" class="btn btn-outline-primary d-flex justify-content-center align-items-center p-0" style="width: 40px; height: 40px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-pencil" viewBox="0 0 16 16" style="vertical-align: middle;">
+                                        <path d="M12.146 0.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-1.5 1.5-3-3 1.5-1.5a.5.5 0 0 1 0-.708zM0 13.5V16h2.5l9.854-9.854-2.5-2.5L0 13.5z"/>
+                                    </svg>
+                                </a>
+                                <form method="post" action="{{ route('tasks.destroy', $task->id) }}" style="margin-bottom: 0;">
                                 @csrf
                                 @method('delete')
-                                <input type="submit" value="削除" onclick="return confirm('削除してよろしいですか?')" style="background-color: transparent; border: none; color: white;">
-
+                                <button type="submit" class="btn btn-outline-danger d-flex justify-content-center align-items-center p-0" style="width: 40px; height: 40px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                         class="bi bi-trash" viewBox="0 0 16 16" style="vertical-align: middle;">
+                                        <path d="M5.5 5.5a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0v-6a.5.5 0 0 1 .5-.5zm2.5.5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0v-6zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0v-6z"/>
+                                        <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2H5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1h2.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3h11a.5.5 0 0 0 0-1h-11a.5.5 0 0 0 0 1z"/>
+                                    </svg>
+                                </button>
                             </form>
                             <form method="POST" action="{{ route('tasks.complete', $task->id) }}">
                                     @csrf
                                     @method('PATCH')
-                                <button type="submit" class="btn btn-success mt-2"onclick="return confirm('完了してよろしいですか？')" >完了</button>
+                                    <button type="submit" class="btn btn-outline-success d-flex justify-content-center align-items-center p-0" style="width: 40px; height: 40px;" onclick="return confirm('完了してよろしいですか？')">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                             class="bi bi-check-square-fill" viewBox="0 0 16 16" style="vertical-align: middle;">
+                                             <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                                    </button>
                             </form>
+                        
                             @endif
 
                     @if (Auth::id() !== $task->user_id)
@@ -168,8 +191,10 @@
                         @guest
                             <a href="{{ route('login') }}" class="btn btn-primary">ログインしてコメント</a>
                         @else
-                            <a class="btn btn-primary text-decoration-none text-white" href="{{ route('comment.create', $task) }}">
-                                コメント表示
+                            <a class="btn btn-outline-primary d-flex justify-content-center align-items-center p-0" style="width: 40px; height: 40px;" href="{{ route('comment.create', $task) }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
+                                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                                  </svg>
                             </a>
                         @endguest
                     @endif
@@ -280,4 +305,3 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 });
 </script>
-
