@@ -96,10 +96,10 @@
             </div>
             <div class="profile-info">
                 
-                <p><strong> 名前：</strong>{{ $user->name }}</p>
-                <p><strong> メール：</strong>{{ $user->email }}</p>
-                <p><strong> 自己紹介：</strong>{{ $user->description }}</p>
-                <p><strong> 登録日：</strong>{{ \Carbon\Carbon::parse($user->created_at)->format('Y年m月d日 H:i') }}</p>
+                <p> 名前：{{ $user->name }}</p>
+                <p> メール：{{ $user->email }}</p>
+                <p> 自己紹介：{{ $user->description }}</p>
+                <p> 登録日：{{ \Carbon\Carbon::parse($user->created_at)->format('Y年m月d日 H:i') }}</p>
                 <div class="profile-buttons">
                     <a href="{{ route('my_page.edit') }}" class="btn btn-primary">プロフィールを編集</a>
                     <a href="{{ route('tasks.index') }}" class="btn btn-outline-secondary">ホームに戻る</a>

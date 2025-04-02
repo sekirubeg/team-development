@@ -87,7 +87,7 @@
 @endif
 <h2 class="text-center">みんなのTo Do</h2>
 
-<form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 80%; margin:auto;">
+<form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 80%; margin:auto;" id="taskFilterForm">
     <div class="d-flex align-items-center gap-2">
         <input type="text" name="search" class="form-control flex-grow-1" placeholder="検索キーワード" value="{{ request('search') }}">
         <button class="btn btn-primary d-flex justify-content-center align-items-center p-0" type="submit" style="width: 48px; height: 45px;">
@@ -95,7 +95,7 @@
                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
             </svg>
         </button>
-        <select name="sort" class="form-select" style="width: 180px;">
+        <select name="sort" class="form-select" style="width: 180px;"  onchange="document.getElementById('taskFilterForm').submit();">
             <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>新しい順</option>
             <option value="important" {{ request('sort') == 'important' ? 'selected' : '' }}>重要度順</option>
             <option value="good" {{ request('sort') == 'good' ? 'selected' : '' }}>いいね数順</option>
