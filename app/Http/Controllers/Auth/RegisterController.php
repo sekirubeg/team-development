@@ -81,6 +81,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'image_at' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
     }
 
@@ -96,6 +97,8 @@ class RegisterController extends Controller
 
         if (array_key_exists('image_at', $data) && $data['image_at']) {
             $imagePath = $data['image_at']->store('images', 'public');
+        } else {
+            $data['image_at'] = 'img/default.png'; // public/img 配下の画像
         }
 
         return User::create([
@@ -104,6 +107,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'image_at' => $imagePath,
         ]);
+
     }
 
     // public function store(Request $request)
@@ -123,7 +127,6 @@ class RegisterController extends Controller
     // }
     public function store(Request $request)
     {
-        dd($request->all());
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',

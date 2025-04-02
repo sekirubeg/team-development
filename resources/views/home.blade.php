@@ -16,7 +16,7 @@
                     @endif
 
                     <div class="alert alert-success">
-                        ログインに成功しました！５秒後にタスクページに移動します。  
+                        ログインに成功しました！２秒後にタスクページに移動します。  
                         <p>自動で移動しない場合は、<a href="{{ url('/tasks') }}">こちら</a>をクリックしてください。</p>
                     </div>
                 </div>
@@ -30,6 +30,6 @@
 <script>
     setTimeout(function() {
         window.location.href = "{{ url('/tasks') }}";
-    }, 5000);
+    }, 2000);
 </script>
 @endsection

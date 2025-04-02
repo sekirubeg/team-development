@@ -92,23 +92,30 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="navbarDropdown">
-                                    <a href="{{ url('/tasks') }}" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
-                                        {{ __('トップページ') }}
-                                    </a>
-
-                                    <a href="{{ url('/task/create') }}" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
-                                        {{ __('新規タスク追加') }}
-                                    </a>
-
-                                    <a href="{{ route('my_page') }}" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
-                                        {{ __('マイページ') }}
-                                    </a>
-
-                                    <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                    class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
-                                        {{ __('ログアウト') }}
-                                    </a>
+                                    <ul class="list-unstyled mb-0">
+                                        <li>
+                                            <a href="{{ url('/tasks') }}" class="d-block px-4 py-2 text-black text-decoration-none">
+                                                {{ __('トップページ') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url('/task/create') }}" class="d-block px-4 py-2 text-black text-decoration-none">
+                                                {{ __('新規タスク追加') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('my_page') }}" class="d-block px-4 py-2 text-black text-decoration-none">
+                                                {{ __('マイページ') }}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('logout') }}"
+                                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                               class="d-block px-4 py-2 text-black text-decoration-none">
+                                                {{ __('ログアウト') }}
+                                            </a>
+                                        </li>
+                                    </ul>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>

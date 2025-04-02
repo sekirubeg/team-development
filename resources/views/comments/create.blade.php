@@ -1,11 +1,11 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
-      
+    <div class="card shadow p-4 w-70 mx-auto bg-white">
   <div class="row justify-content-center mt-5">
       <div class="col-md-8">
-        <h2>以下のToDoにコメントします</h2>
-          <a href="#" class="task-card" 
+        <h2 class=text-center>以下のToDoにコメントします</h2>
+          <a href="#" class="task-card shadow" 
                     data-title="{{ $task->title }}" 
                     data-content="{{ $task->content }}" 
                     data-img="{{ asset('img/sample.jpg') }}"  
@@ -65,7 +65,7 @@
 
               <div class="form-group">
                   <label>コメント</label>
-                  <textarea class="form-control"
+                  <textarea class="form-control bg-white"
                             placeholder="内容"
                             rows="5"
                             name="body"></textarea>
@@ -74,5 +74,6 @@
           </form>
       </div>
   </div>
+</div>
 </div>
 @endsection
