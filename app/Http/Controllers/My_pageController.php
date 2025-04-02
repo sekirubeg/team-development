@@ -55,6 +55,7 @@ class My_pageController extends Controller
             // 実際にDBへ保存するのは $user->image_at カラムに対して行う
             $user->image_at = $path;
         };
+       
         $user->save();
         return redirect()
             ->route('my_page')
