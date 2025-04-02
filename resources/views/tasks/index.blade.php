@@ -4,7 +4,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
-   
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 不要(Aiko)　--}}
     <style>
         .card-text, #modalContent {
@@ -123,11 +122,18 @@
                     <div class="card" style="border: 1px ridge #dee2e6;">
                         <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="タスク画像" style="height: 280px; border-bottom:1px ridge #dee2e6">
 
+
                      </a>
                         <div class="card-body">
                         <div class="d-flex justify-content-between text-muted px-2 pt-2" style="font-size: 0.8rem;">
                             <small>期限日：{{ $task->limit }}</small>
                             <small>重要度：{{ $task->importance }}</small>
+                        </div>
+                        <div>
+
+                            @foreach($task->tags as $tag)
+                                <span>{{ $tag->name }}</span>
+                            @endforeach
                         </div>
                         <h5 class="card-title text-center mt-2">{{ $task->title }}</h5>
 
@@ -163,6 +169,7 @@
                             </form>
                         
                             @endif
+
 
                     @if (Auth::id() !== $task->user_id)
                         <div style="display:flex; align-items: center;">
@@ -230,6 +237,7 @@
 
                 <p id="modalContent" class="text-start mt-3"></p> <!-- 左端から折り返し -->
             </div>
+            
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
             </div>
