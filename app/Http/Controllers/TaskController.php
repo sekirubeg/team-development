@@ -7,7 +7,7 @@ use App\Models\Task;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Collection;
@@ -35,15 +35,15 @@ class TaskController extends Controller
             ->whereDate('limit', '>', now())         // 期限が今日以降
 
             ->where('is_completed', false);           // 未完了のみ
-          
-        
+
+
         if($request->has('search') && $request->filled('search')){
             $searchKeyword = $request->input('search');
             $query->where('title', 'like', '%'. $searchKeyword . '%');
         }
 
         $sortType = $request->input('sort', 'newest');
-       
+
         switch ($sortType) {
             case 'newest':
                 $query->orderBy('created_at', 'desc');
@@ -68,7 +68,7 @@ class TaskController extends Controller
         }
 
 
-        return view('tasks.index', compact('tasks', 'todayTasks')); 
+        return view('tasks.index', compact('tasks', 'todayTasks'));
 
     }
 
@@ -77,7 +77,7 @@ class TaskController extends Controller
         return view('tasks.create');
     }
 
-    
+
     public function store(Request $request)
 
 {
@@ -94,7 +94,7 @@ class TaskController extends Controller
         'title.string' => 'タイトルは文字列である必要があります。',
         'title.max' => 'タイトルは最大30文字までです。',
         'title.min' => 'タイトルは最小3文字以上である必要があります。',
-        
+
         'content.required' => '内容を入力してください。',
         'content.string' => '内容は文字列である必要があります。',
         'content.min' => '内容は最小10文字以上である必要があります。',
@@ -119,33 +119,33 @@ class TaskController extends Controller
         'limit' => 'required|date',
 
 
-    ]);
+    ],[
 
 
-    
+
             'content.required' => '内容を入力してください。',
             'content.string' => '内容は文字列である必要があります。',
             'content.min' => '内容は最小10文字以上である必要があります。',
-    
+
             'importance.required' => '優先度を選択してください。',
             'importance.integer' => '優先度は数値である必要があります。',
             'importance.between' => '優先度は1〜3の間で選択してください。',
-    
+
             'limit.required' => '期限日を入力してください。',
             'limit.date' => '有効な日付を入力してください。',
-    
+
             'image_at.image' => 'アップロードできるのは画像ファイルのみです。',
             'image_at.mimes' => '画像の形式はjpeg, png, jpg, gifのいずれかにしてください。',
             'image_at.max' => '画像のサイズは最大2MBまでです。',
         ]);
-    
+
         // 画像の保存処理
         if ($request->hasFile('image_at')) {
             $image_at = $request->file('image_at')->store('images', 'public');
         } else {
             $image_at = 'img/task.png'; // デフォルト画像
         }
-    
+
         // タスクを作成
         $task = Task::create([
             'title' => $request->title,
@@ -155,20 +155,20 @@ class TaskController extends Controller
             'importance' => $request->importance,
             'limit' => $request->limit,
         ]);
-    
+
         // タグの処理（タグが空でない場合のみ）
         if ($request->filled('tag_name')) {
             $tagNames = explode(' ', trim($request->tag_name));
-    
+
             foreach ($tagNames as $name) {
                 $tag = Tag::firstOrCreate(['name' => $name]);
                 $task->tags()->attach($tag->id);
             }
         }
-    
+
         return redirect()->route('tasks.index')->with('success', 'タスクを作成しました！');
     }
-    
+
 
 
     public function edit(Task $task)
@@ -204,6 +204,9 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         Gate::authorize('update', $task);
+        if ($task->image_at && Storage::exists('public/' . $task->image_at)) {
+            Storage::delete('public/' . $task->image_at);
+        }
         $task->delete();
         return redirect()->route('tasks.index');
     }
@@ -215,7 +218,7 @@ class TaskController extends Controller
         return redirect()->route('home')->with('message', '投稿を削除しました');
     }
 
-    
+
     public function complete($id)
     {
         $task = Task::findOrFail($id);

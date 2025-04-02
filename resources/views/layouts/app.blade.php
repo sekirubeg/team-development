@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,6 +19,10 @@
     @yield('styles')
 
     <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
         .profile-icon-small {
             width: 32px;
             height: 32px;
@@ -32,7 +37,12 @@
             font-family: 'Nunito', sans-serif;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-family: 'Nunito', sans-serif;
             font-weight: 700;
         }
@@ -48,17 +58,19 @@
             font-family: 'Nunito', sans-serif;
             font-size: 16px;
         }
-    
     </style>
 </head>
+
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md bg-black text-white shadow-sm">
-            <div class="container" >
+            <div class="container">
                 <a class="navbar-brand text-white" href="{{ url('/tasks') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
@@ -74,7 +86,7 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                        <a class="nav-link text-white" href="{{ route('login') }}">{{ __('ログイン') }}</a>
+                                    <a class="nav-link text-white" href="{{ route('login') }}">{{ __('ログイン') }}</a>
                                 </li>
                             @endif
 
@@ -84,29 +96,34 @@
                                 </li>
                             @endif
                         @else
-
-                        <li class="nav-item dropdown mb-0">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    <img src="{{ asset('storage/' . Auth::user()->image_at) }}" alt="プロフィール画像" class="profile-icon-small" style="margin-right: 15px;">
+                            <li class="nav-item dropdown mb-0">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle text-white d-flex align-items-center"
+                                    href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false" v-pre>
+                                    <img src="{{ asset('storage/' . Auth::user()->image_at) }}" alt="プロフィール画像"
+                                        class="profile-icon-small" style="margin-right: 15px;">
                                     {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end bg-white" aria-labelledby="navbarDropdown">
-                                    <a href="{{ url('/tasks') }}" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
+                                    <a href="{{ url('/tasks') }}"
+                                        class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
                                         {{ __('トップページ') }}
                                     </a>
 
-                                    <a href="{{ url('/task/create') }}" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
+                                    <a href="{{ url('/task/create') }}"
+                                        class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
                                         {{ __('新規タスク追加') }}
                                     </a>
 
-                                    <a href="{{ route('my_page') }}" class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
+                                    <a href="{{ route('my_page') }}"
+                                        class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
                                         {{ __('マイページ') }}
                                     </a>
 
                                     <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                    class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                        class="block px-4 py-2 text-black bg-white transition duration-150 ease-in-out text-decoration-none">
                                         {{ __('ログアウト') }}
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -125,4 +142,5 @@
         </main>
     </div>
 </body>
+
 </html>
