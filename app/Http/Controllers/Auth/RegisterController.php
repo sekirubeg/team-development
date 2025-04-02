@@ -50,7 +50,7 @@ class RegisterController extends Controller
         return redirect($this->redirectPath());
     }
 
-  
+
 
     /**
      * Where to redirect users after registration.
@@ -141,6 +141,7 @@ class RegisterController extends Controller
         } else {
             $data['image_at'] = 'img/default.png'; // public/img 配下の画像
         }
+ 
 
         // create() にパスを渡す
         $user = $this->create($data);
