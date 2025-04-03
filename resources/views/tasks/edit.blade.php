@@ -47,6 +47,14 @@
                 @enderror
             </div>
 
+            <div class="form-group mb-3">
+                    <label for="tag_name" class="form-label ">
+                        タグ <small class="text-muted">(スペース区切り: 仕事 勉強)</small>
+                    </label>
+                    <input type="text" id="tag_name" name="tag_name" class="form-control" placeholder="仕事 勉強"
+                        value="{{ old('tag_name') }}">
+                </div>
+
             {{-- 優先度 --}}
             <div class="mb-3">
                 <label for="priority" class="form-label">優先度:</label>

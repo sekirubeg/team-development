@@ -39,7 +39,9 @@
 
         /* h5, h6{
             font-family: 'Nunito', sans-serif;
-            font-size: 15px; */
+
+            font-size: 15px;
+        } */
 
 
         .navbar .navbar-brand,
