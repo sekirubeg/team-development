@@ -28,7 +28,7 @@ class TaskController extends Controller
 
 
 
-        $query = Task::with('comments')
+        $query = Task::with(['comments', 'tags', 'user'])
             ->withCount('bookmarks')
 
             ->with('tags')

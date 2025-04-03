@@ -119,7 +119,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card task-card h-100">
                         <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}"
-                            class="card-img-top" style="height: 200px; object-fit: cover;">
+                            class="card-img-top" style="height: 200px; object-fit: cover; border-bottom: 1px solid #dee2e6;">
                         <div class="card-body">
                             <h5 class="card-title">{{ $task->title }}</h5>
                             <p class="card-text">{{ Str::limit($task->content, 100) }}</p>
@@ -186,8 +186,16 @@
                 <div class="col-md-4 mb-4">
                     <div class="card task-card h-100">
                         <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}"
-                            class="card-img-top" style="height: 200px; object-fit: cover;">
+                            class="card-img-top" style="height: 200px; object-fit: cover; border-bottom: 1px solid #dee2e6;">
                         <div class="card-body">
+                            
+                            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                <img src="{{ asset('storage/' . ($task->user->image_at ?? 'img/default.png')) }}"
+                                     alt="アイコン"
+                                     style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 8px;">
+                                <span>{{ $task->user->name }}</span>
+                            </div>
+
                             <h5 class="card-title d-flex justify-content-between align-items-center">
                                 {{ $task->title }}
                                 <i class="fa-solid fa-heart heart-icon"></i>
