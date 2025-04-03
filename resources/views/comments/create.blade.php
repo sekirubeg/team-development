@@ -15,6 +15,14 @@
                     <div class="card">
                         <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="タスク画像">
                         <div class="card-body">
+                            
+                            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                <img src="{{ asset('storage/' . ($task->user->image_at ?? 'img/default.png')) }}"
+                                     alt="アイコン"
+                                     style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 8px;">
+                                <span>{{ $task->user->name }}</span>
+                            </div>
+
                             <h5 class="card-title d-flex justify-content-between align-items-center text-center">
                                 <span>{{ $task->title }}</span>
                                 <small class="text-muted">{{ $task->created_at->format('Y/m/d H:i') }}</small>

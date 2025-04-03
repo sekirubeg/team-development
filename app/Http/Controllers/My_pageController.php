@@ -16,8 +16,8 @@ class My_pageController extends Controller
             $query->withCount('bookmarks');
         }])->find($id);
 
-        $tasks = $user->tasks;
-        $likedTasks = $user->bookmarks;
+        $tasks = $user->tasks()->with('user')->withCount('bookmarks')->get();
+        $likedTasks = $user->bookmarks()->with('user')->withCount('bookmarks')->get();
         return view('mypage.profile', compact('user', 'tasks', 'likedTasks'));
     }
 
