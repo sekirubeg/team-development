@@ -100,7 +100,7 @@
                                         </li>
                                         <li>
                                             <a href="{{ url('/task/create') }}" class="d-block px-4 py-2 text-black text-decoration-none">
-                                                {{ __('新規タスク追加') }}
+                                                {{ __('新規タスク') }}
                                             </a>
                                         </li>
                                         <li>
