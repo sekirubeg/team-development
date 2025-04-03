@@ -7,11 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> 不要(Aiko)　--}}
     <style>
+        body {
+            background: linear-gradient(120deg, #fdfbfb, #ebedee);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
         h2 {
-    font-family: 'Noto Sans JP', sans-serif;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
+        font-family: 'Noto Sans JP', sans-serif;
+        font-weight: 700;
+        letter-spacing: 1px;
+        }
+
         .card-text,
         #modalContent {
             word-break: break-word;
@@ -132,7 +138,12 @@
     </div>
     </div>
     @endif
-    <h2 class="text-center mb-4 mt-4">みんなのTo Do</h2>
+    <div class="text-center">
+        <h2 class="mb-4 mt-5" style="font-size: 2rem; font-weight: 700; color: #333; position: relative; display: inline-block;">
+            みんなのTo Do
+            <span style="display: block; height: 3px; width: 60%; background-color: #0d6efd; margin: 8px auto 0; border-radius: 3px;"></span>
+        </h2>
+    </div>
 
     <form action="{{ route('tasks.index') }}" class="mb-4" method="GET" style="width: 80%; margin:auto;"
         id="taskFilterForm">
@@ -177,6 +188,14 @@
 
                     </a>
                     <div class="card-body">
+
+                        <div style="display: flex; align-items: center;">
+                            <img src="{{ asset('storage/' . ($task->user->image_at ?? 'img/default.png')) }}"
+                                 alt="アイコン"
+                                 style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; margin-right: 8px;">
+                            <span>{{ $task->user->name }}</span>
+                        </div>
+
                         <div class="d-flex justify-content-between text-muted px-2 pt-2" style="font-size: 0.8rem;">
                             <small>期限日：{{ $task->limit }}</small>
                             <small>重要度：{{ $task->importance }}</small>
