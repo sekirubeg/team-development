@@ -12,7 +12,7 @@
 @section('content')
 <div class="profile-container mt-5 " style="width:60%; margin:auto;">
     <div class="profile-card card shadow-lg p-4 profile-edit-card">
-        <h2 class="mb-4 text-center text-primary">プロフィールを編集</h2>
+        <h2 class="mb-4 text-center " style="color: #de7a22;">プロフィールを編集</h2>
 
         @if (session('success'))
             <div class="alert alert-success text-center">
@@ -49,7 +49,7 @@
             </div>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-primary px-5">更新する</button>
+                <button type="submit" class="btn btn-primary px-5" style="background: #de7a22; border:none;">更新する</button>
                 <a href="{{ route('my_page') }}" class="btn btn-secondary ms-2">キャンセル</a>
             </div>
         </form>

@@ -39,8 +39,10 @@
 
         /* h5, h6{
             font-family: 'Nunito', sans-serif;
+
             font-size: 15px;
         } */
+
 
         .navbar .navbar-brand,
         .navbar .nav-link,
@@ -48,12 +50,12 @@
             font-family: 'Nunito', sans-serif;
             font-size: 16px;
         }
-    
+
     </style>
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md bg-black text-white shadow-sm">
+        <nav class="navbar navbar-expand-md text-white shadow-sm" style="background-color: #f4cc70; ">
             <div class="container" >
                 <a class="navbar-brand text-white" href="{{ url('/tasks') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -69,7 +71,7 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
+                    <ul class="navbar-nav ms-auto" >
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
