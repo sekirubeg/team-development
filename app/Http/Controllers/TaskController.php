@@ -82,6 +82,39 @@ class TaskController extends Controller
 
 {
 
+    
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
+        'importance' => 'required|integer',
+        'limit' => 'required|date',
+        'image_at' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+    ]);
+
+    
+    $imagePath = null;
+    if ($request->hasFile('image_at')) {
+        $imagePath = $request->file('image_at')->store('images', 'public'); 
+        
+    }
+
+    
+    Task::create([
+        'title' => $request->title,
+        'content' => $request->content,
+        'user_id' => Auth::id(),  
+        'image_at' => $imagePath, 
+        'importance' => $request->importance,
+        'limit' => $request->limit
+    ]);
+
+    return redirect()->route('tasks.index')->with('success', 'タスクが作成されました！');
+
+    // return redirect()->route('tasks.index')->with('success', 'タスクが作成されました！')->withInput();
+
+}
+
 
     $request->validate([
         'title' => 'required|string|max:30|min:3',
