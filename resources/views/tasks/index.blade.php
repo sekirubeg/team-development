@@ -147,6 +147,14 @@
                         d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                 </svg>
             </button>
+            <select name="tag" class="form-select" style="width: 180px;" onchange="document.getElementById('taskFilterForm').submit();">
+            <option value="">全てのタグ</option>
+            @foreach(\App\Models\Tag::all() as $tag)
+                <option value="{{ $tag->id }}" {{ request('tag') == $tag->id ? 'selected' : '' }}>
+                    {{ $tag->name }}
+                </option>
+            @endforeach
+        </select>
             <select name="sort" class="form-select" style="width: 180px;"
                 onchange="document.getElementById('taskFilterForm').submit();">
                 <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>新しい順</option>
@@ -232,6 +240,14 @@
                                                 d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
                                     </button>
                                 </form>
+                                                                    <a class="btn btn-outline-primary d-flex justify-content-center align-items-center p-0"
+                                        style="width: 40px; height: 40px;" href="{{ route('comment.create', $task) }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
+                                            <path
+                                                d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793zm5 4a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2" />
+                                        </svg>
+                                    </a>
                             @endif
 
 
