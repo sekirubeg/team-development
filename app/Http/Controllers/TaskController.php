@@ -68,7 +68,7 @@ class TaskController extends Controller
                 $query->orderBy('created_at', 'desc');
         }
 
-        $tasks = $query->paginate(6)->appends($request->query());
+        $tasks = $query->paginate(8)->appends($request->query());
 
         if ($request->filled('search')) {
             $tasks->appends(['search' => $request->search]);

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 @endsection
 @section('content')
-<div class="profile-container mt-5">
+<div class="profile-container mt-5 " style="width:60%; margin:auto;">
     <div class="profile-card card shadow-lg p-4 profile-edit-card">
         <h2 class="mb-4 text-center text-primary">プロフィールを編集</h2>
 
@@ -43,7 +43,7 @@
                 <input id="image_at" type="file" class="form-control" name="image_at" onchange="previewImage(this)">
                 @if($user->image_at)
                     <div class="mt-3">
-                        <img src="{{ asset('storage/' . $user->image_at) }}" alt="プロフィール画像" class="img-thumbnail" style="max-width: 150px;" id="img">
+                        <img src="{{ asset('storage/' . $user->image_at) }}" alt="プロフィール画像" class="img-thumbnail" style="max-width: 150px; " id="img">
                     </div>
                 @endif
             </div>

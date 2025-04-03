@@ -188,7 +188,7 @@
                         <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}"
                             class="card-img-top" style="height: 200px; object-fit: cover; border-bottom: 1px solid #dee2e6;">
                         <div class="card-body">
-                            
+
                             <div style="display: flex; align-items: center; margin-bottom: 8px;">
                                 <img src="{{ asset('storage/' . ($task->user->image_at ?? 'img/default.png')) }}"
                                      alt="アイコン"
