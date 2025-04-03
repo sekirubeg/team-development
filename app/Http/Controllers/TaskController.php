@@ -26,6 +26,8 @@ class TaskController extends Controller
                 ->get();
         }
 
+
+
         $query = Task::with(['comments', 'tags', 'user'])
             ->withCount('bookmarks')
 
@@ -36,7 +38,12 @@ class TaskController extends Controller
 
             ->where('is_completed', false);           // 未完了のみ
 
-
+        if ($request->has('tag') && $request->filled('tag')) {
+            $tagId = $request->input('tag');
+            $query->whereHas('tags', function ($q) use ($tagId) {
+                $q->where('tags.id', $tagId);
+            });
+        }
         if($request->has('search') && $request->filled('search')){
             $searchKeyword = $request->input('search');
             $query->where('title', 'like', '%'. $searchKeyword . '%');
@@ -61,7 +68,7 @@ class TaskController extends Controller
                 $query->orderBy('created_at', 'desc');
         }
 
-        $tasks = $query->paginate(6)->appends($request->query());
+        $tasks = $query->paginate(8)->appends($request->query());
 
         if ($request->filled('search')) {
             $tasks->appends(['search' => $request->search]);
@@ -82,11 +89,10 @@ class TaskController extends Controller
 
 {
 
-
     $request->validate([
         'title' => 'required|string|max:30|min:3',
         'content' => 'required|string|min:10|max:140',
-        'image_at' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'image_at' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:20480',
         'importance' => 'required|integer|between:1,3',
         'limit' => 'required|date',
     ], [
@@ -136,7 +142,7 @@ class TaskController extends Controller
 
             'image_at.image' => 'アップロードできるのは画像ファイルのみです。',
             'image_at.mimes' => '画像の形式はjpeg, png, jpg, gifのいずれかにしてください。',
-            'image_at.max' => '画像のサイズは最大2MBまでです。',
+            'image_at.max' => '画像のサイズは最大5MBまでです。',
         ]);
 
         // 画像の保存処理

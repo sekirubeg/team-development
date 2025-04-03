@@ -27,11 +27,7 @@
                     @error('content')
                         <div class="text-danger mt-1">{{ $message }}</div>
                     @enderror
-                </div>
-
-                @error('content')
-                    <div class="text-danger mt-2 mb-2">{{ $message }}</div>
-                @enderror
+                </div>  
 
                 <div class="form-group mb-3">
                     <label for="tag_name" class="form-label ">

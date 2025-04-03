@@ -5,17 +5,17 @@
   <div class="row justify-content-center mt-5">
       <div class="col-md-8">
         <h2 class=text-center>以下のToDoにコメントします</h2>
-          <a href="#" class="task-card shadow" 
-                    data-title="{{ $task->title }}" 
-                    data-content="{{ $task->content }}" 
-                    data-img="{{ asset('img/sample.jpg') }}"  
-                    data-date="{{ $task->created_at->format('Y/m/d H:i') }}"  
+          <a href="#" class="task-card shadow"
+                    data-title="{{ $task->title }}"
+                    data-content="{{ $task->content }}"
+                    data-img="{{ asset('img/sample.jpg') }}"
+                    data-date="{{ $task->created_at->format('Y/m/d H:i') }}"
                     style="display:block; text-decoration:none; color:black; width:350px; margin:40px auto ; "
                     data-bs-toggle="modal" data-bs-target="#taskModal">
                     <div class="card">
                         <img src="{{ $task->image_at ? asset('storage/' . $task->image_at) : asset('storage/img/task.png') }}" class="card-img-top" alt="タスク画像">
                         <div class="card-body">
-                            
+
                             <div style="display: flex; align-items: center; margin-bottom: 8px;">
                                 <img src="{{ asset('storage/' . ($task->user->image_at ?? 'img/default.png')) }}"
                                      alt="アイコン"
@@ -27,7 +27,7 @@
                                 <span>{{ $task->title }}</span>
                                 <small class="text-muted">{{ $task->created_at->format('Y/m/d H:i') }}</small>
                             </h5>
-                                <p class="card-text text-start mb-3">{{ $task->content }}</p> 
+                                <p class="card-text text-start mb-3">{{ $task->content }}</p>
                         </div>
                     </div>
           </a>
@@ -38,7 +38,7 @@
                   <div class="card mb-2">
                       <div class="card-body">
                         <div style="display: flex; align-items:center; margin-bottom:13px;">
-                        <img src="{{ asset('storage/' . Auth::user()->image_at) }}" alt="プロフィール画像" class="profile-icon-small" style="margin-right: 15px;">
+                        <img src="{{ asset('storage/' . $comment->user->image_at) }}" alt="プロフィール画像" class="profile-icon-small" style="margin-right: 15px;">
                           <p style="margin-bottom: 0;">{{ $comment->user->name }}</p>
                           </div>
                           <p style="font-size:18px; margin-bottom:5px;">{{ $comment->body }}</p>

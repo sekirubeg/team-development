@@ -16,7 +16,7 @@ class My_pageController extends Controller
             $query->withCount('bookmarks');
         }])->find($id);
 
-        $tasks = $user->tasks()->with('user')->withCount('bookmarks')->get();
+        $tasks = $user->tasks()->with('user')->where('is_completed', false)->withCount('bookmarks')->get();
         $likedTasks = $user->bookmarks()->with('user')->withCount('bookmarks')->get();
         return view('mypage.profile', compact('user', 'tasks', 'likedTasks'));
     }
@@ -55,7 +55,7 @@ class My_pageController extends Controller
             // 実際にDBへ保存するのは $user->image_at カラムに対して行う
             $user->image_at = $path;
         };
-       
+
         $user->save();
         return redirect()
             ->route('my_page')
