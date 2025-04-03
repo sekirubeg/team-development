@@ -24,7 +24,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 
-Route::get('/tasks/{id}',[TaskController::class,'show'])->name('tasks.show');
 
 
 Route::get('/tasks/{task}/edit',[TaskController::class, 'edit'])->name('tasks.edit');
@@ -50,3 +49,11 @@ Route::post('/task/store', [TaskController::class, 'store'])->name('tasks.store'
 
 Route::post('/comments', [CommentController::class, 'store'])->name('comment.store');
 Route::get('/comments/create/{task_id}', [CommentController::class, 'create'])->name('comment.create');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comment.destroy');
+
+// routes/web.php
+Route::patch('/tasks/{id}/complete', [TaskController::class, 'complete'])->name('tasks.complete');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/tasks/completed', [TaskController::class, 'completed'])->name('tasks.completed');
+});
