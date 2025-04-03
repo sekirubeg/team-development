@@ -49,7 +49,7 @@ class TaskController extends Controller
             $query->where('title', 'like', '%'. $searchKeyword . '%');
         }
 
-        $sortType = $request->input('sort', 'newest');
+        $sortType = $request->input('sort', 'good');
 
         switch ($sortType) {
             case 'newest':
