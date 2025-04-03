@@ -76,6 +76,7 @@
         .heart-icon {
             color: #e74c3c;
         }
+
     </style>
 @endsection
 
@@ -101,7 +102,7 @@
                     <p> 自己紹介：{{ $user->description }}</p>
                     <p> 登録日：{{ \Carbon\Carbon::parse($user->created_at)->format('Y年m月d日 H:i') }}</p>
                     <div class="profile-buttons">
-                        <a href="{{ route('my_page.edit') }}" class="btn btn-primary">プロフィールを編集</a>
+                        <a href="{{ route('my_page.edit') }}" class="btn btn-primary profile" style="background-color:#de7a22 ; border:none;">プロフィールを編集</a>
                         <a href="{{ route('tasks.index') }}" class="btn btn-outline-secondary">ホームに戻る</a>
 
                     </div>
@@ -128,7 +129,7 @@
                                 @if (Auth::id() == $task->user_id)
                                     <a href="{{ route('tasks.edit', $task->id) }}"
                                         class="btn btn-outline-primary d-flex justify-content-center align-items-center p-0"
-                                        style="width: 40px; height: 40px; background-color: transparent;">
+                                        style="width: 40px; height: 40px; color:f4cc70; border-color:f4cc70; ">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16"
                                             style="vertical-align: middle; color: var(--bs-primary);">
@@ -143,7 +144,7 @@
                                         @method('delete')
                                         <button type="submit"
                                             class="btn btn-outline-danger d-flex justify-content-center align-items-center p-0"
-                                            style="width: 40px; height: 40px; background-color: transparent;"
+                                            style="width: 40px; height: 40px;  color:de7a22; border-color:de7a22;"
                                             onclick="return confirm('削除してよろしいですか？')">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                 fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"
@@ -161,7 +162,7 @@
                                         @method('PATCH')
                                         <button type="submit"
                                             class="btn btn-outline-success d-flex justify-content-center align-items-center p-0 mx-2"
-                                            style="width: 40px; height: 40px; background-color: transparent;"
+                                            style="width: 40px; height: 40px; color:20948b; border-color:20948b;"
                                             onclick="return confirm('完了してよろしいですか？')">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                                 fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16"

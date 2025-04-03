@@ -63,6 +63,56 @@
             background-color: #D1D2D0; /* ホバー時の背景 */
             color: white; /* ホバー時の文字色 */
         }
+  <style>
+    .custom-edit-button {
+        color: #f4cc70;
+        border-color: #f4cc70;
+    }
+
+    .custom-edit-button:hover,
+    .custom-edit-button:focus {
+        color: #f4cc70;
+        border-color: #f4cc70;
+        background-color: rgba(244, 204, 112, 0.15); /* やわらかい黄背景 */
+    }
+
+    .custom-delete-button {
+        color: #de7a22;
+        border-color: #de7a22;
+    }
+
+    .custom-delete-button:hover,
+    .custom-delete-button:focus {
+        color: #de7a22;
+        border-color: #de7a22;
+        background-color: rgba(222, 122, 34, 0.15); /* やわらかいオレンジ背景 */
+    }
+
+    .custom-complete-button {
+        color: #20948b;
+        border-color: #20948b;
+    }
+
+    .custom-complete-button:hover,
+    .custom-complete-button:focus {
+        color: #20948b;
+        border-color: #20948b;
+        background-color: rgba(32, 148, 139, 0.15); /* やわらかい青緑背景 */
+    }
+
+    .custom-comment-button {
+        color: #6ab187;
+        border-color: #6ab187;
+    }
+
+    .custom-comment-button:hover,
+    .custom-comment-button:focus {
+        color: #6ab187;
+        border-color: #6ab187;
+        background-color: rgba(106, 177, 135, 0.15); /* やわらかいグリーン背景 */
+    }
+</style>
+
     </style>
 @endsection
 
@@ -104,7 +154,7 @@
                             <div class="d-flex justify-content-between">
                                 @if (Auth::id() == $task->user_id)
                                 <a href="{{ route('tasks.edit', $task->id) }}"
-                                    class="btn btn-outline-primary d-flex justify-content-center align-items-center p-0"
+                                    class="btn custom-edit-button d-flex justify-content-center align-items-center p-0"
                                     style="width: 40px; height: 40px; color:f4cc70; border-color:f4cc70;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                         fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16"
@@ -118,7 +168,7 @@
                                     @csrf
                                     @method('delete')
                                     <button type="submit"
-                                        class="btn btn-outline-danger d-flex justify-content-center align-items-center p-0"
+                                        class="btn custom-delete-button d-flex justify-content-center align-items-center p-0"
                                         style="width: 40px; height: 40px; color:de7a22; border-color:de7a22;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"
@@ -134,7 +184,7 @@
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit"
-                                        class="btn btn-outline-success d-flex justify-content-center align-items-center p-0"
+                                        class="btn custom-complete-button d-flex justify-content-center align-items-center p-0"
                                         style="width: 40px; height: 40px; color:20948b; border-color:20948b;" onclick="return confirm('完了してよろしいですか？')">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16"
@@ -143,7 +193,7 @@
                                                 d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
                                     </button>
                                 </form>
-                                <a class="btn btn-outline-primary d-flex justify-content-center align-items-center p-0"
+                                <a class="btn custom-comment-button d-flex justify-content-center align-items-center p-0"
                                     style="width: 40px; height: 40px; color:6ab187; border-color:6ab187;" href="{{ route('comment.create', $task) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
@@ -249,7 +299,7 @@
                         <div class="d-flex justify-content-between">
                             @if (Auth::id() == $task->user_id)
                                 <a href="{{ route('tasks.edit', $task->id) }}"
-                                    class="btn btn-outline-primary d-flex justify-content-center align-items-center p-0"
+                                    class="btn custom-edit-button d-flex justify-content-center align-items-center p-0"
                                     style="width: 40px; height: 40px; color:f4cc70; border-color:f4cc70;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                         fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16"
@@ -263,7 +313,7 @@
                                     @csrf
                                     @method('delete')
                                     <button type="submit"
-                                        class="btn btn-outline-danger d-flex justify-content-center align-items-center p-0"
+                                        class="btn custom-delete-button d-flex justify-content-center align-items-center p-0"
                                         style="width: 40px; height: 40px; color:de7a22; border-color:de7a22;">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16"
@@ -279,7 +329,7 @@
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit"
-                                        class="btn btn-outline-success d-flex justify-content-center align-items-center p-0"
+                                        class="btn custom-complete-button d-flex justify-content-center align-items-center p-0"
                                         style="width: 40px; height: 40px; color:20948b; border-color:20948b;" onclick="return confirm('完了してよろしいですか？')">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16"
@@ -288,7 +338,7 @@
                                                 d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
                                     </button>
                                 </form>
-                                <a class="btn btn-outline-primary d-flex justify-content-center align-items-center p-0"
+                                <a class="btn custom-comment-button d-flex justify-content-center align-items-center p-0"
                                     style="width: 40px; height: 40px; color:6ab187; border-color:6ab187;" href="{{ route('comment.create', $task) }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
@@ -297,7 +347,6 @@
                                     </svg>
                                 </a>
                             @endif
-
 
                             @if (Auth::id() !== $task->user_id)
                                 <div style="display:flex; align-items: center;">
@@ -326,7 +375,7 @@
                                 </div>
 
                                 @guest
-                                    <a class="btn btn-outline-primary d-flex justify-content-center align-items-center p-0"
+                                    <a class="btn custom-comment-button d-flex justify-content-center align-items-center p-0"
                                         style="width: 40px; height: 40px; color:B3C100; border-color:B3C100;" href="{{ route('login') }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">
@@ -335,7 +384,7 @@
                                         </svg>
                                     </a>
                                 @else
-                                    <a class="btn btn-outline-primary d-flex justify-content-center align-items-center p-0"
+                                    <a class="btn custom-comment-button d-flex justify-content-center align-items-center p-0"
                                         style="width: 40px; height: 40px; color:6ab187; border-color:6ab187;" href="{{ route('comment.create', $task) }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-chat-left-dots" viewBox="0 0 16 16">

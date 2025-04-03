@@ -27,7 +27,7 @@
                     @error('content')
                         <div class="text-danger mt-1">{{ $message }}</div>
                     @enderror
-                </div>  
+                </div>
 
                 <div class="form-group mb-3">
                     <label for="tag_name" class="form-label ">
@@ -77,7 +77,7 @@
 
                 {{-- ボタン --}}
                 <div class="text-center">
-                    <button type="submit" class="btn btn-primary px-5">作成</button>
+                    <button type="submit" class="btn btn-primary px-5" style="background-color: #de7a22; border:none;" >作成</button>
                 </div>
             </form>
         </div>
