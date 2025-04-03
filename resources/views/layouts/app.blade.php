@@ -53,7 +53,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md bg-black text-white shadow-sm">
+        <nav class="navbar navbar-expand-md bg-primary text-white shadow-sm">
             <div class="container" >
                 <a class="navbar-brand text-white" href="{{ url('/tasks') }}">
                     {{ config('app.name', 'Laravel') }}
